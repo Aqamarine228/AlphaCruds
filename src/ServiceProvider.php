@@ -3,6 +3,7 @@
 namespace AlphaDevTeam\AlphaCruds;
 
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider as ParentProvider;
 
 class ServiceProvider extends ParentProvider
@@ -12,6 +13,9 @@ class ServiceProvider extends ParentProvider
     {
         Paginator::useBootstrap();
         $this->registerConfigPublishing();
+        $this->registerRoutes();
+        $this->registerResources();
+        $this->registerAssetPublishing();
     }
 
     public function register(): void
@@ -31,4 +35,27 @@ class ServiceProvider extends ParentProvider
         $this->mergeConfigFrom(__DIR__.'/../config/alphacruds.php', 'alphacruds');
     }
 
+    protected function registerRoutes(): void
+    {
+        Route::group([
+            'namespace' => 'AlphaDevTeam\AlphaCruds\Http\Controllers',
+            'middleware' => config('alphacruds.routes.middleware'),
+            'prefix' => config('alphacruds.routes.path'),
+            'as' => config('alphacruds.routes.route_name_prefix') . '.',
+        ], function () {
+            $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+        });
+    }
+
+    protected function registerResources(): void
+    {
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'alphacruds');
+    }
+
+    protected function registerAssetPublishing(): void
+    {
+        $this->publishes([
+            __DIR__.'/../public' => public_path('vendor/alphacruds'),
+        ], 'alphacruds-assets');
+    }
 }
