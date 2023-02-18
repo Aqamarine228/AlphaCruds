@@ -3,6 +3,7 @@
 namespace AlphaDevTeam\AlphaCruds;
 
 use AlphaDevTeam\AlphaCruds\Commands\CrudMakeCommand;
+use AlphaDevTeam\AlphaCruds\Commands\RequestMakeCommand;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider as ParentProvider;
@@ -65,7 +66,8 @@ class ServiceProvider extends ParentProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                CrudMakeCommand::class
+                CrudMakeCommand::class,
+                RequestMakeCommand::class,
             ]);
         }
     }
