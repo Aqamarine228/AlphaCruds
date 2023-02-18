@@ -2,6 +2,7 @@
 
 namespace AlphaDevTeam\AlphaCruds;
 
+use AlphaDevTeam\AlphaCruds\Commands\CrudMakeCommand;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider as ParentProvider;
@@ -16,6 +17,7 @@ class ServiceProvider extends ParentProvider
         $this->registerRoutes();
         $this->registerResources();
         $this->registerAssetPublishing();
+        $this->registerCommands();
     }
 
     public function register(): void
@@ -57,5 +59,14 @@ class ServiceProvider extends ParentProvider
         $this->publishes([
             __DIR__.'/../public' => public_path('vendor/alphacruds'),
         ], 'alphacruds-assets');
+    }
+
+    protected function registerCommands(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                CrudMakeCommand::class
+            ]);
+        }
     }
 }
