@@ -2,18 +2,19 @@
 
 namespace $CLASS_NAMESPACE$;
 
-use Illuminate\Http\Request;
 use $MODEL_NAMESPACE$\$MODEL_NAME$;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
-class $CLASS$ extends $BASE_CONTROLLER$
+class $CLASS$ extends \$BASE_CONTROLLER$
 {
-    public function index()
+    public function index(): View
     {
         $$MODEL_CAMEL_NAME$s = $MODEL_NAME$::paginate();
         return $this->view('$MODEL_CAMEL_NAME$s.index')->with('$MODEL_CAMEL_NAME$s', $$MODEL_CAMEL_NAME$s);
     }
 
-    public function edit(int $id)
+    public function edit(int $id): View
     {
         $$MODEL_CAMEL_NAME$ = $MODEL_NAME$::find($id);
         if (!$$MODEL_CAMEL_NAME$) {
@@ -22,21 +23,21 @@ class $CLASS$ extends $BASE_CONTROLLER$
         return $this->view('$MODEL_CAMEL_NAME$s.edit')->with('$MODEL_CAMEL_NAME$', $$MODEL_CAMEL_NAME$);
     }
 
-    public function store($REQUEST$ $request)
+    public function store(\$REQUEST$ $request): RedirectResponse
     {
         $$MODEL_CAMEL_NAME$ = $MODEL_NAME$::create($request->validated());
         $this->showSuccessMessage('$MODEL_NAME$ created successfully.');
         return redirect(route('$LOWER_NAME$.$MODEL_CAMEL_NAME$s.show', $$MODEL_CAMEL_NAME$->id));
     }
 
-    public function update($REQUEST$ $request, $MODEL_NAME$ $$MODEL_CAMEL_NAME$)
+    public function update(\$REQUEST$ $request, $MODEL_NAME$ $$MODEL_CAMEL_NAME$): RedirectResponse
     {
         $$MODEL_CAMEL_NAME$->update($request->validated());
         $this->showSuccessMessage('$MODEL_NAME$ updated successfully.');
         return back();
     }
 
-    public function destroy($MODEL_NAME$ $$MODEL_CAMEL_NAME$)
+    public function destroy($MODEL_NAME$ $$MODEL_CAMEL_NAME$): RedirectResponse
     {
         $$MODEL_CAMEL_NAME$->delete();
         $this->showSuccessMessage('$MODEL_NAME$ deleted successfully.');
