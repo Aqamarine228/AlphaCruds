@@ -8,6 +8,7 @@ use AlphaDevTeam\AlphaCruds\Commands\EditViewMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\FormViewMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\IndexViewMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\RequestMakeCommand;
+use AlphaDevTeam\AlphaCruds\Commands\RoutesMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\ShowViewMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\TableViewMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\ViewsMakeCommand;
@@ -82,6 +83,7 @@ class ServiceProvider extends ParentProvider
                 FormViewMakeCommand::class,
                 ShowViewMakeCommand::class,
                 ViewsMakeCommand::class,
+                RoutesMakeCommand::class,
             ]);
         }
     }

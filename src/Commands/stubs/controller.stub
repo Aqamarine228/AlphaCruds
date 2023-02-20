@@ -16,7 +16,7 @@ class $CLASS$ extends \$BASE_CONTROLLER$
 
     public function create(): View
     {
-        return $this->view('$MODEL_CAMEL_NAME$s.create', ['$MODEL_CAMEL_NAME$' => $$MODEL_CAMEL_NAME$]);
+        return $this->view('$MODEL_CAMEL_NAME$s.create');
     }
 
     public function show($MODEL_NAME$ $$MODEL_CAMEL_NAME$): View
