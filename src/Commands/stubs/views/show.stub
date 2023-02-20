@@ -1,0 +1,37 @@
+@extends('$LOWER_NAME$::$LAYOUT$')
+
+@section('title')
+    $ENTITY_NAME$
+@stop
+
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.index') }}">$ENTITY_NAME$s</a></li>
+    <li class="breadcrumb-item active">{{ $$MODEL_CAMEL_NAME$->id }}</li>
+@stop
+
+@section('content')
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-striped mb-4 posts-table">
+                        <tbody>
+                              @foreach($FIELDS$ as $field)
+                                  <tr>
+                                       <td>
+                                            {{Str::title($field)}}
+                                       </td>
+                                       <td>
+                                           {{$$MODEL_CAMEL_NAME$[$field]}}
+                                       </td>
+                                  </tr>
+                              @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@stop

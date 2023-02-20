@@ -1,0 +1,26 @@
+@extends('$LOWER_NAME$::$LAYOUT$')
+
+@section('title')
+    Adding New $ENTITY_NAME$
+@stop
+
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.index') }}">$ENTITY_NAME$s</a></li>
+    <li class="breadcrumb-item active">New $ENTITY_NAME$</li>
+@stop
+
+@section('content')
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    @include('$LOWER_NAME$::$MODEL_KEBAB$.blocks._form', [
+                                           'model' => new \$MODEL_NAMESPACE$\$MODEL_NAME$
+                    ])
+                </div>
+            </div>
+        </div>
+    </div>
+
+@stop

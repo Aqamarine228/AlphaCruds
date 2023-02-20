@@ -11,16 +11,22 @@ class $CLASS$ extends \$BASE_CONTROLLER$
     public function index(): View
     {
         $$MODEL_CAMEL_NAME$s = $MODEL_NAME$::paginate();
-        return $this->view('$MODEL_CAMEL_NAME$s.index')->with('$MODEL_CAMEL_NAME$s', $$MODEL_CAMEL_NAME$s);
+        return $this->view('$MODEL_CAMEL_NAME$s.index', ['$MODEL_CAMEL_NAME$s' => $$MODEL_CAMEL_NAME$s]);
     }
 
-    public function edit(int $id): View
+    public function create(): View
     {
-        $$MODEL_CAMEL_NAME$ = $MODEL_NAME$::find($id);
-        if (!$$MODEL_CAMEL_NAME$) {
-            $$MODEL_CAMEL_NAME$ = new $MODEL_NAME$();
-        }
-        return $this->view('$MODEL_CAMEL_NAME$s.edit')->with('$MODEL_CAMEL_NAME$', $$MODEL_CAMEL_NAME$);
+        return $this->view('$MODEL_CAMEL_NAME$s.create', ['$MODEL_CAMEL_NAME$' => $$MODEL_CAMEL_NAME$]);
+    }
+
+    public function show($MODEL_NAME$ $$MODEL_CAMEL_NAME$): View
+    {
+        return $this->view('$MODEL_CAMEL_NAME$s.show', ['$MODEL_CAMEL_NAME$' => $$MODEL_CAMEL_NAME$]);
+    }
+
+    public function edit($MODEL_NAME$ $$MODEL_CAMEL_NAME$): View
+    {
+        return $this->view('$MODEL_CAMEL_NAME$s.edit', ['$MODEL_CAMEL_NAME$' => $$MODEL_CAMEL_NAME$]);
     }
 
     public function store(\$REQUEST$ $request): RedirectResponse
