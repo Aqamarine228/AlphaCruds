@@ -1,0 +1,10 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+class $CLASS$ extends $PARENT_MODEL_NAMESPACE$\$MODEL_NAME$
+{
+    use HasFactory;
+}
