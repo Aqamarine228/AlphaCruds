@@ -14,7 +14,7 @@ class ControllerMakeCommand extends GeneratorCommand
 {
     use ModuleCommandTrait;
 
-    protected $name = 'alphacruds:make-crud';
+    protected $name = 'alphacruds:make-controller';
 
     protected $argumentName = 'model';
 
@@ -45,7 +45,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     protected function getControllerName(): string
     {
-        return $this->getModelName() . 's' . 'Controller';
+        return $this->getModelName() . 'Controller';
     }
 
     private function getControllerNameWithoutNamespace(): string
