@@ -19,6 +19,11 @@ class $CLASS$ extends \$BASE_CONTROLLER$
         return $this->view('$MODEL_CAMEL_NAME$s.create', ['$MODEL_CAMEL_NAME$' => $$MODEL_CAMEL_NAME$]);
     }
 
+    public function show($MODEL_NAME$ $$MODEL_CAMEL_NAME$): View
+    {
+        return $this->view('$MODEL_CAMEL_NAME$s.show', ['$MODEL_CAMEL_NAME$' => $$MODEL_CAMEL_NAME$]);
+    }
+
     public function edit($MODEL_NAME$ $$MODEL_CAMEL_NAME$): View
     {
         return $this->view('$MODEL_CAMEL_NAME$s.edit', ['$MODEL_CAMEL_NAME$' => $$MODEL_CAMEL_NAME$]);
