@@ -10,7 +10,7 @@ use Nwidart\Modules\Traits\ModuleCommandTrait;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-class CrudMakeCommand extends GeneratorCommand
+class ControllerMakeCommand extends GeneratorCommand
 {
     use ModuleCommandTrait;
 

@@ -2,8 +2,15 @@
 
 namespace AlphaDevTeam\AlphaCruds;
 
-use AlphaDevTeam\AlphaCruds\Commands\CrudMakeCommand;
+use AlphaDevTeam\AlphaCruds\Commands\ControllerMakeCommand;
+use AlphaDevTeam\AlphaCruds\Commands\CreateViewMakeCommand;
+use AlphaDevTeam\AlphaCruds\Commands\EditViewMakeCommand;
+use AlphaDevTeam\AlphaCruds\Commands\FormViewMakeCommand;
+use AlphaDevTeam\AlphaCruds\Commands\IndexViewMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\RequestMakeCommand;
+use AlphaDevTeam\AlphaCruds\Commands\ShowViewMakeCommand;
+use AlphaDevTeam\AlphaCruds\Commands\TableViewMakeCommand;
+use AlphaDevTeam\AlphaCruds\Commands\ViewsMakeCommand;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider as ParentProvider;
@@ -66,8 +73,15 @@ class ServiceProvider extends ParentProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                CrudMakeCommand::class,
+                ControllerMakeCommand::class,
                 RequestMakeCommand::class,
+                EditViewMakeCommand::class,
+                CreateViewMakeCommand::class,
+                IndexViewMakeCommand::class,
+                TableViewMakeCommand::class,
+                FormViewMakeCommand::class,
+                ShowViewMakeCommand::class,
+                ViewsMakeCommand::class,
             ]);
         }
     }

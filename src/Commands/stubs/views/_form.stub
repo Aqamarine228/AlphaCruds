@@ -1,0 +1,23 @@
+<form action="{{ $model->exists ? route('$LOWER_NAME$.$MODEL_KEBAB$.update', $model->id) : route('$LOWER_NAME$.$MODEL_KEBAB$.store') }}" method="POST">
+
+    @csrf
+    @if ($model->exists)
+        @method('PUT')
+    @endif
+
+    @foreach($FIELDS$ as $key=>$value)
+        @include('$LOWER_NAME$.$MODEL_KEBAB$::$COMPONENTS_PATH$.input_group', [
+                'type' => $value,
+                'required' => true,
+                'label' => Str::title($key),
+                'name' => $key,
+                'placeholder' => Str::title($key),
+                'defaultValue' => $model[$key]
+            ])
+    @endforeach
+
+    <button class="btn btn-primary mt-lg-4" type="submit">
+        <i class="fa fa-save"></i>
+        {{ $model->exists ? 'Update' : 'Save' }}
+    </button>
+</form>

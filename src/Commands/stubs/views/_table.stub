@@ -1,0 +1,24 @@
+<table class="table table-striped mb-4 posts-table">
+    <thead>
+    <tr>
+        @foreach($FIELDS$ as $field)
+            <th>{{Str::title($field)}}</th>
+        @endforeach
+    </tr>
+    </thead>
+    <tbody>
+    @foreach($$MODEL_CAMEL_NAME$s as $$MODEL_CAMEL_NAME$)
+        <tr>
+            <td>
+                <a href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.edit', $$MODEL_CAMEL_NAME$->id) }}">{{ $$MODEL_CAMEL_NAME$->id }}</a>
+            </td>
+            @foreach($FIELDS$ as $field)
+                <td>
+                    {{$$MODEL_CAMEL_NAME$[$field]}}
+                </td>
+            @endforeach
+        </tr>
+    @endforeach
+    </tbody>
+</table>
+{{ $$MODEL_CAMEL_NAME$s->links() }}
