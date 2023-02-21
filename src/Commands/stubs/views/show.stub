@@ -17,16 +17,7 @@
                 <div class="card-body">
                     <table class="table table-striped mb-4 posts-table">
                         <tbody>
-                              @foreach($FIELDS$ as $field)
-                                  <tr>
-                                       <td>
-                                            {{Str::title($field)}}
-                                       </td>
-                                       <td>
-                                           {{$$MODEL_CAMEL_NAME$[$field]}}
-                                       </td>
-                                  </tr>
-                              @endforeach
+                              $FIELDS$
                         </tbody>
                     </table>
                 </div>
@@ -41,12 +32,12 @@
                             @csrf
                             @method('DELETE')
 
-                            <button form="delete-entity" class="btn btn-danger ml-1"
-                                    data-ask="1" data-title="Delete $ENTITY_NAME$"
-                                    data-message="Are you sure you want to delete the $ENTITY_NAME$?"
-                                    data-type="danger"><i class="fas fa-trash mr-1"></i>Delete
-                            </button>
                     </form>
+                    <button form="delete-entity" class="btn btn-danger ml-1"
+                            data-ask="1" data-title="Delete $ENTITY_NAME$"
+                            data-message="Are you sure you want to delete the $ENTITY_NAME$?"
+                            data-type="danger"><i class="fas fa-trash mr-1"></i>Delete
+                    </button>
                 </div>
             </div>
         </div>

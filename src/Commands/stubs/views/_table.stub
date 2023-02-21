@@ -2,9 +2,7 @@
     <thead>
     <tr>
         <th>ID</th>
-        @foreach($FIELDS$ as $field)
-            <th>{{Str::title($field)}}</th>
-        @endforeach
+        $TABLE_HEADERS$
     </tr>
     </thead>
     <tbody>
@@ -13,11 +11,7 @@
             <td>
                 <a href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.show', $$MODEL_CAMEL_NAME$->id) }}">{{ $$MODEL_CAMEL_NAME$->id }}</a>
             </td>
-            @foreach($FIELDS$ as $field)
-                <td>
-                    {{$$MODEL_CAMEL_NAME$[$field]}}
-                </td>
-            @endforeach
+            $TABLE_BODY$
         </tr>
     @endforeach
     </tbody>

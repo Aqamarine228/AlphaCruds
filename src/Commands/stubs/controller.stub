@@ -40,7 +40,7 @@ class $CLASS$ extends \$BASE_CONTROLLER$
     {
         $$MODEL_CAMEL_NAME$->update($request->validated());
         $this->showSuccessMessage('$MODEL_NAME$ updated successfully.');
-        return back();
+        return redirect(route('$LOWER_NAME$.$MODEL_CAMEL_NAME$.show', $$MODEL_CAMEL_NAME$->id));
     }
 
     public function destroy($MODEL_NAME$ $$MODEL_CAMEL_NAME$): RedirectResponse
