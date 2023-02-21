@@ -29,6 +29,7 @@ class ModelMakeCommand extends GeneratorCommand
             'NAMESPACE' => $this->getClassNamespace($module) . '\\Models',
             'CLASS' => $this->getClass(),
             'PARENT_MODEL_NAMESPACE' => $this->getParentModelNamespace(),
+            'FILLABLE' => $this->getFillable(),
         ]))->render();
     }
 
@@ -49,10 +50,17 @@ class ModelMakeCommand extends GeneratorCommand
         return $this->option('parent') ? $this->option('parent') : 'App\\Models';
     }
 
+    private function getFillable(): string
+    {
+        return base64_decode($this->argument('fillable'));
+    }
+
+
     protected function getArguments(): array
     {
         return [
             ['model', InputArgument::REQUIRED, 'The name of model to be used.'],
+            ['fillable', InputArgument::REQUIRED, 'Fields to be fillable in model.'],
             ['module', InputArgument::OPTIONAL, 'The name of module will be used.'],
         ];
     }
@@ -60,7 +68,8 @@ class ModelMakeCommand extends GeneratorCommand
     protected function getOptions(): array
     {
         return [
-            ['parent', 'p', InputOption::VALUE_OPTIONAL, 'Change default parent model namespace']
+            ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the request already exists'],
+            ['parent', 'p', InputOption::VALUE_OPTIONAL, 'Change default parent model namespace'],
         ];
     }
 }

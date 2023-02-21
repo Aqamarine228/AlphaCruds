@@ -39,7 +39,7 @@ class ServiceProvider extends ParentProvider
     {
         $this->publishes([
             __DIR__.'/../config/alphacruds.php' => config_path('alphacruds.php'),
-        ], 'alphanews-config');
+        ], 'alphacruds-config');
     }
 
     protected function configure(): void
@@ -88,5 +88,19 @@ class ServiceProvider extends ParentProvider
                 ModelMakeCommand::class,
             ]);
         }
+
+        $this->commands([
+            ControllerMakeCommand::class,
+            RequestMakeCommand::class,
+            EditViewMakeCommand::class,
+            CreateViewMakeCommand::class,
+            IndexViewMakeCommand::class,
+            TableViewMakeCommand::class,
+            FormViewMakeCommand::class,
+            ShowViewMakeCommand::class,
+            ViewsMakeCommand::class,
+            RoutesMakeCommand::class,
+            ModelMakeCommand::class,
+        ]);
     }
 }

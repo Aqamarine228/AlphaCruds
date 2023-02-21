@@ -6,8 +6,8 @@
     @endif
 
     @foreach($FIELDS$ as $key=>$value)
-        @include('$LOWER_NAME$.$MODEL_KEBAB$::$COMPONENTS_PATH$.input_group', [
-                'type' => $value,
+        @include('$LOWER_NAME$::$COMPONENTS_PATH$.input_group', [
+                'type' => $value[0],
                 'required' => true,
                 'label' => Str::title($key),
                 'name' => $key,

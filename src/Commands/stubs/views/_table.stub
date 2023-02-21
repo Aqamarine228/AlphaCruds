@@ -1,6 +1,7 @@
 <table class="table table-striped mb-4 posts-table">
     <thead>
     <tr>
+        <th>ID</th>
         @foreach($FIELDS$ as $field)
             <th>{{Str::title($field)}}</th>
         @endforeach
@@ -10,7 +11,7 @@
     @foreach($$MODEL_CAMEL_NAME$s as $$MODEL_CAMEL_NAME$)
         <tr>
             <td>
-                <a href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.edit', $$MODEL_CAMEL_NAME$->id) }}">{{ $$MODEL_CAMEL_NAME$->id }}</a>
+                <a href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.show', $$MODEL_CAMEL_NAME$->id) }}">{{ $$MODEL_CAMEL_NAME$->id }}</a>
             </td>
             @foreach($FIELDS$ as $field)
                 <td>

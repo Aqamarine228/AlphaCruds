@@ -30,6 +30,24 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="card-footer d-flex">
+                    <a href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.edit', $$MODEL_CAMEL_NAME$->id) }}" class="btn btn-primary">
+                        <em class="fas fa-pen"></em>
+                        Edit
+                    </a>
+
+                    <form id="delete-entity"
+                              action="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.destroy', $$MODEL_CAMEL_NAME$->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+
+                            <button form="delete-entity" class="btn btn-danger ml-1"
+                                    data-ask="1" data-title="Delete $ENTITY_NAME$"
+                                    data-message="Are you sure you want to delete the $ENTITY_NAME$?"
+                                    data-type="danger"><i class="fas fa-trash mr-1"></i>Delete
+                            </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
