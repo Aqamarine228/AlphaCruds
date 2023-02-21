@@ -3,6 +3,7 @@
 namespace AlphaDevTeam\AlphaCruds\Commands;
 
 use AlphaDevTeam\AlphaCruds\Support\Stub;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -24,9 +25,29 @@ class FormViewMakeCommand extends ViewMakeCommand
         return (new Stub($this->getViewStubName('_form'), [
             'MODEL_KEBAB' => $this->getModelKebabName(),
             'LOWER_NAME' => $module->getLowerName(),
-            'FIELDS' => $this->getFields(),
-            'COMPONENTS_PATH' => $this->getComponentsPath(),
+            'FIELDS' => $this->generateFields($module->getLowerName()),
         ]))->render();
+    }
+
+    protected function generateFields(string $lowerName): string
+    {
+        $result = "";
+        $componentPath = $this->getComponentsPath();
+        eval('$fields=' . $this->getFields() . ';');
+        foreach ($fields as $key => $value) {
+            $label = Str::title($key);
+            $result .= "
+
+            @include('$lowerName::$componentPath.input_group', [
+                'type' => '$value[0]',
+                'required' => true,
+                'label' => '$label',
+                'name' => '$key',
+                'placeholder' => '$key',
+                'defaultValue' => \$model->$key
+            ])";
+        }
+        return $result;
     }
 
     protected function getViewPath(): string

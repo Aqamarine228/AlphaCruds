@@ -3,7 +3,7 @@
 @section('title')
     $ENTITY_NAME$s
 
-    <a class="btn btn-sm btn-dark d-inline-block ml-2"
+    <a class="btn btn-sm btn-primary d-inline-block ml-2"
        href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.create') }}">
         <i class=" fas fa-plus-circle mr-1"></i>
         Add New $ENTITY_NAME$

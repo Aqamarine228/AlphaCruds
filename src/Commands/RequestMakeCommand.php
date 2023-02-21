@@ -34,7 +34,7 @@ class RequestMakeCommand extends GeneratorCommand
 
         $requestPath = GenerateConfigReader::read('request');
 
-        return $path . $requestPath->getPath() . '/' . $this->getModelName() . 's' . 'Request' . '.php';
+        return $path . $requestPath->getPath() . '/' . $this->getModelName() . 'Request' . '.php';
     }
 
     private function getModelName(): string
@@ -49,7 +49,7 @@ class RequestMakeCommand extends GeneratorCommand
 
     private function getClassName(): string
     {
-        return $this->getModelName() . 'sRequest';
+        return $this->getModelName() . 'Request';
     }
 
     private function getRequestsNamespace(): string
