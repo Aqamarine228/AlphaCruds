@@ -26,15 +26,15 @@ class CurdGeneratorController extends BaseAlphaCrudsController
             'module' => 'string|required',
             'model' => 'string|required',
             'force' => 'nullable',
-            'fields' => 'array',
-            'types' => 'array'
+            'fields' => 'array|nullable',
+            'types' => 'array|nullable'
         ]);
 
         $this->model = $validated['model'];
         $this->module = $validated['module'];
-        $this->force = $validated['force'];
-        $this->fields = $validated['fields'];
-        $this->types = $validated['types'];
+        $this->force = isset($validated['force']);
+        $this->fields = $validated['fields'] ?? [];
+        $this->types = $validated['types'] ?? [];
 
         $this->createModel();
         $this->createController();

@@ -102,6 +102,9 @@ class ViewsMakeCommand extends Command
     private function getFieldsKeys(): string
     {
         eval('$array=' . base64_decode($this->argument('fields')) . ';');
+        if (sizeof($array) == 0) {
+            return base64_encode('[]');
+        }
         return base64_encode(
             '["'
             . implode('","', array_keys($array))
