@@ -1,18 +1,18 @@
 <?php
 
-namespace AlphaDevTeam\AlphaCruds\Commands;
+namespace AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands;
 
 use AlphaDevTeam\AlphaCruds\Support\Stub;
 
-class EditViewMakeCommand extends ViewMakeCommand
+class IndexViewMakeCommand extends ViewMakeCommand
 {
-    protected $name = 'alphacruds:make-edit-view';
+    protected $name = 'alphacruds:make-index-view';
 
     protected function getTemplateContents(): bool|array|string
     {
         $module = $this->laravel['modules']->findOrFail($this->getModuleName());
 
-        return (new Stub($this->getViewStubName('edit'), [
+        return (new Stub($this->getViewStubName('index'), [
             'LAYOUT' => $this->getLayout(),
             'ENTITY_NAME' => $this->getEntityName(),
             'MODEL_KEBAB' => $this->getModelKebabName(),
@@ -23,6 +23,6 @@ class EditViewMakeCommand extends ViewMakeCommand
 
     protected function getViewPath(): string
     {
-        return 'edit';
+        return 'index';
     }
 }

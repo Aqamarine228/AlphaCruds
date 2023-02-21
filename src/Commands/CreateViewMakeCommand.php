@@ -2,6 +2,7 @@
 
 namespace AlphaDevTeam\AlphaCruds\Commands;
 
+use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\ViewMakeCommand;
 use AlphaDevTeam\AlphaCruds\Support\Stub;
 
 class CreateViewMakeCommand extends ViewMakeCommand

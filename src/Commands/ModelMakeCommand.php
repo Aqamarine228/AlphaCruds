@@ -24,12 +24,14 @@ class ModelMakeCommand extends GeneratorCommand
     {
         $module = $this->laravel['modules']->findOrFail($this->getModuleName());
 
-        return (new Stub('/model.stub', [
+        return (new Stub($this->getStubName(), [
             'MODEL_NAME' => $this->getModelName(),
             'NAMESPACE' => $this->getClassNamespace($module) . '\\Models',
             'CLASS' => $this->getClass(),
             'PARENT_MODEL_NAMESPACE' => $this->getParentModelNamespace(),
             'FILLABLE' => $this->getFillable(),
+            'TRANSLATED_FIELDS' => $this->getTranslatedFields(),
+            'MODEL_SNAKE' => $this->getModelSnakeName(),
         ]))->render();
     }
 
@@ -38,6 +40,11 @@ class ModelMakeCommand extends GeneratorCommand
         $path = $this->laravel['modules']->getModulePath($this->getModuleName());
         $modelPath = GenerateConfigReader::read('model');
         return $path . $modelPath->getPath() . '/' . $this->getModelName() . '.php';
+    }
+
+    private function getStubName(): string
+    {
+        return $this->getTranslatedFields() ? '/model-translations.stub' : '/model.stub';
     }
 
     protected function getModelName(): string
@@ -55,6 +62,16 @@ class ModelMakeCommand extends GeneratorCommand
         return base64_decode($this->argument('fillable'));
     }
 
+    private function getTranslatedFields(): ?string
+    {
+        return $this->option('translations') ? base64_decode($this->option('translations')) : null;
+    }
+
+    private function getModelSnakeName(): string
+    {
+        return Str::snake($this->argument('model'));
+    }
+
 
     protected function getArguments(): array
     {
@@ -68,8 +85,9 @@ class ModelMakeCommand extends GeneratorCommand
     protected function getOptions(): array
     {
         return [
-            ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the request already exists'],
-            ['parent', 'p', InputOption::VALUE_OPTIONAL, 'Change default parent model namespace'],
+            ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the request already exists.'],
+            ['parent', 'p', InputOption::VALUE_OPTIONAL, 'Change default parent model namespace.'],
+            ['translations', 't', InputOption::VALUE_OPTIONAL, 'Fields that will be translated to multiple languages.'],
         ];
     }
 }
