@@ -85,6 +85,7 @@ class RoutesMakeCommand extends GeneratorCommand
     protected function getOptions(): array
     {
         return [
+            ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the request already exists'],
             ['controller', 'c', InputOption::VALUE_OPTIONAL, 'Path to controller which will CRUD routes use.'],
         ];
     }

@@ -3,6 +3,7 @@
 namespace AlphaDevTeam\AlphaCruds\Commands;
 
 use AlphaDevTeam\AlphaCruds\Support\Stub;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputArgument;
 
 class ShowViewMakeCommand extends ViewMakeCommand
@@ -23,13 +24,33 @@ class ShowViewMakeCommand extends ViewMakeCommand
             'MODEL_KEBAB' => $this->getModelKebabName(),
             'MODEL_CAMEL_NAME' => $this->getModelCamelName(),
             'LOWER_NAME' => $module->getLowerName(),
-            'FIELDS' => $this->getFields(),
+            'FIELDS' => $this->generateFields(),
         ]))->render();
     }
 
     protected function getViewPath(): string
     {
         return 'show';
+    }
+
+    protected function generateFields(): string
+    {
+        $result = "";
+        $modelKebab = $this->getModelKebabName();
+        eval('$fields=' . $this->getFields() . ';');
+        foreach ($fields as $field) {
+            $title = Str::title($field);
+            $result .= "
+                        <tr>
+                            <td>
+                                $title
+                            </td>
+                            <td>
+                                {{\$$modelKebab->$field}}
+                            </td>
+                        </tr>";
+        }
+        return $result;
     }
 
     private function getFields(): string
