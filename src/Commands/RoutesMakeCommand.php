@@ -29,7 +29,7 @@ class RoutesMakeCommand extends GeneratorCommand
 
     protected function getStubName(): string
     {
-        return '/routes.stub';
+        return $this->option('translations') ? '/routes-translations.stub' : '/routes.stub';
     }
 
     protected function getControllerPath(): string
@@ -86,6 +86,7 @@ class RoutesMakeCommand extends GeneratorCommand
     {
         return [
             ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the request already exists'],
+            ['translations', 't', InputOption::VALUE_NONE, 'Whether to add update translated fields method to CRUD.'],
             ['controller', 'c', InputOption::VALUE_OPTIONAL, 'Path to controller which will CRUD routes use.'],
         ];
     }
