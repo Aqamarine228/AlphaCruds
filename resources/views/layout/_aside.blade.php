@@ -25,7 +25,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{route('alphacruds.translated-curd-generator')}}" class="nav-link">
-                        <em class="nav-icon fas fa-robot"></em>
+                        <em class="nav-icon fas fa-language"></em>
                         <p>
                             Translated Crud Generator
                         </p>

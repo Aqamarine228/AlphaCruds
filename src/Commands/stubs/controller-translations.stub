@@ -69,8 +69,7 @@ class $CLASS$ extends \$BASE_CONTROLLER$
     {
         $validated = $request->validated();
         $$MODEL_CAMEL_NAME$ = $MODEL_NAME$::create($validated);
-        $language = Language::where('code', $validated['language_code'])->first();
-        $$MODEL_CAMEL_NAME$->translations()->attach($language->id, $request->only($TRANSLATED_FIELDS$));
+        $$MODEL_CAMEL_NAME$->translations()->attach($validated['language_code'], $request->only($TRANSLATED_FIELDS$));
 
         $this->showSuccessMessage('$MODEL_NAME$ created successfully.');
         return redirect(route('$LOWER_NAME$.$MODEL_CAMEL_NAME$.show', $$MODEL_CAMEL_NAME$->id));
@@ -87,10 +86,9 @@ class $CLASS$ extends \$BASE_CONTROLLER$
     public function updateTranslatedFields(\$REQUEST$ $request, $MODEL_NAME$ $$MODEL_CAMEL_NAME$): RedirectResponse
     {
         $validated = $request->validated();
-        $language = Language::where('code', $validated['language_code'])->first();
         $$MODEL_CAMEL_NAME$
             ->translations()
-            ->syncWithoutDetaching([$language->id => $request->only($TRANSLATED_FIELDS$)]);
+            ->syncWithoutDetaching([$validated['language_code'] => $request->only($TRANSLATED_FIELDS$)]);
         $this->showSuccessMessage('$MODEL_NAME$ updated successfully.');
         return redirect(route('$LOWER_NAME$.$MODEL_CAMEL_NAME$.show', $$MODEL_CAMEL_NAME$->id));
     }
