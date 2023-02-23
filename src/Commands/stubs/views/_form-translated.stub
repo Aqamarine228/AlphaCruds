@@ -36,7 +36,9 @@ $TRANSLATED_FIELDS$
         @foreach($languages as $language)
             <option
              value="{{$language->code}}"
-             {{$language->code === request()->input('language_code') ? 'selected' : ''}}
+             {{$language->code === (request()->exists('language_code')
+                                   ? request()->input('language_code')
+                                   : request()->user()?->language_code) ? 'selected' : ''}}
             >
                 {{$language->name}}
             </option>

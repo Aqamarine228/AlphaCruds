@@ -15,7 +15,7 @@
             </td>
             $TABLE_BODY$
             <td>
-                {{ $$MODEL_CAMEL_NAME$->translations->first()->code }}
+                {{ $$MODEL_CAMEL_NAME$->translations->first()?->code }}
             </td>
             $TRANSLATED_TABLE_BODY$
         </tr>

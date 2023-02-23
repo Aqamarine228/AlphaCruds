@@ -86,7 +86,7 @@ class TableViewMakeCommand extends ViewMakeCommand
         eval('$fields=' . $this->getTranslatedFields() . ';');
         foreach ($fields as $field) {
             $result .= "
-            <td>{{\$$modelKebab"."->translations->first()->pivot->"."$field}}</td>";
+            <td>{{\$$modelKebab"."->translations->first()?->pivot->"."$field}}</td>";
         }
         return $result;
     }
