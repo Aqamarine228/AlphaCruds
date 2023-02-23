@@ -17,6 +17,9 @@ class TranslatedCrudGeneratorController extends BaseAlphaCrudsController
     private array $types;
     private array $translatedFields;
     private array $translatedTypes;
+
+    private bool $errors = false;
+
     public function index(): View
     {
         return $this->view('translated-crud-generator');
@@ -48,15 +51,14 @@ class TranslatedCrudGeneratorController extends BaseAlphaCrudsController
         $this->createViews();
         $this->createRoutes();
 
-        $this->showSuccessMessage('CRUD created successfully.');
-
+        !$this->errors && $this->showSuccessMessage('CRUD created successfully.');
 
         return back();
     }
 
     private function createModel(): void
     {
-        Artisan::call(
+        $this->handleCommandOutput(Artisan::call(
             'alphacruds:make-model',
             array_merge([
                 'model' => $this->model,
@@ -64,24 +66,24 @@ class TranslatedCrudGeneratorController extends BaseAlphaCrudsController
                 'module' => $this->module,
                 '-t' => $this->generateTranslatedFields(),
             ], $this->force ? ['-f' => true] : [])
-        );
+        ));
     }
 
     private function createController(): void
     {
-        Artisan::call(
+        $this->handleCommandOutput(Artisan::call(
             'alphacruds:make-controller',
             array_merge([
                 'model' => $this->model,
                 'module' => $this->module,
                 '-t' => $this->generateTranslatedFields(),
             ], $this->force ? ['-f' => true] : [])
-        );
+        ));
     }
 
     private function createRequest(): void
     {
-        Artisan::call(
+        $this->handleCommandOutput(Artisan::call(
             'alphacruds:make-request',
             array_merge([
                 'model' => $this->model,
@@ -89,12 +91,12 @@ class TranslatedCrudGeneratorController extends BaseAlphaCrudsController
                 'update-fields' => $this->generateUpdateFields(),
                 'module' => $this->module,
             ], $this->force ? ['-f' => true] : [])
-        );
+        ));
     }
 
     private function createViews(): void
     {
-        Artisan::call(
+        $this->handleCommandOutput(Artisan::call(
             'alphacruds:make-views',
             array_merge([
                 'model' => $this->model,
@@ -102,19 +104,27 @@ class TranslatedCrudGeneratorController extends BaseAlphaCrudsController
                 'module' => $this->module,
                 '-t' => $this->generateTranslatedInputFields(),
             ], $this->force ? ['-f' => true] : [])
-        );
+        ));
     }
 
     private function createRoutes(): void
     {
-        Artisan::call(
+        $this->handleCommandOutput(Artisan::call(
             'alphacruds:make-routes',
             array_merge([
                 'model' => $this->model,
                 'module' => $this->module,
                 '-t' => true,
             ], $this->force ? ['-f' => true] : [])
-        );
+        ));
+    }
+
+    private function handleCommandOutput(int $result): void
+    {
+        if ($result == 1) {
+            $this->showErrorMessage(Artisan::output());
+            $this->errors = true;
+        }
     }
 
     private function generateFillableFields(): string
@@ -201,5 +211,4 @@ class TranslatedCrudGeneratorController extends BaseAlphaCrudsController
 
         return base64_encode($result.']');
     }
-
 }

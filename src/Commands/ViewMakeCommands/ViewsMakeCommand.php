@@ -19,31 +19,43 @@ class ViewsMakeCommand extends Command
     public function handle()
     {
         $module = $this->laravel['modules']->findOrFail($this->getModuleName());
-        $this->createCreateView($module);
-        $this->createIndexView($module);
-        $this->createShowView($module);
-        $this->createEditView($module);
-        $this->createFormView($module);
-        $this->createTableView($module);
+        if ($result = $this->createCreateView($module)) {
+            return $result;
+        }
+        if ($result = $this->createIndexView($module)) {
+            return $result;
+        }
+        if ($result = $this->createShowView($module)) {
+            return $result;
+        }
+        if ($result = $this->createEditView($module)) {
+            return $result;
+        }
+        if ($result = $this->createFormView($module)) {
+            return $result;
+        }
+        if ($result = $this->createTableView($module)) {
+            return $result;
+        }
     }
 
-    private function createCreateView(string $module): void
+    private function createCreateView(string $module): int
     {
-        $this->call(
+        return $this->call(
             'alphacruds:make-create-view',
             array_merge(
                 [
-                'model' => $this->getModelName(),
-                'module' => $module,
+                    'model' => $this->getModelName(),
+                    'module' => $module,
                 ],
                 $this->option('force') ? ['-f' => true] : [],
                 $this->option('translations') ? ['-t' => true] : [],
-            )
+            ),
         );
     }
-    private function createIndexView(string $module): void
+    private function createIndexView(string $module): int
     {
-        $this->call(
+        return $this->call(
             'alphacruds:make-index-view',
             array_merge([
                 'model' => $this->getModelName(),
@@ -52,9 +64,9 @@ class ViewsMakeCommand extends Command
         );
     }
 
-    private function createShowView(string $module): void
+    private function createShowView(string $module): int
     {
-        $this->call(
+        return $this->call(
             'alphacruds:make-show-view',
             array_merge(
                 [
@@ -67,9 +79,9 @@ class ViewsMakeCommand extends Command
             )
         );
     }
-    private function createEditView(string $module): void
+    private function createEditView(string $module): int
     {
-        $this->call(
+        return $this->call(
             'alphacruds:make-edit-view',
             array_merge(
                 [
@@ -82,9 +94,9 @@ class ViewsMakeCommand extends Command
         );
     }
 
-    private function createFormView(string $module): void
+    private function createFormView(string $module): int
     {
-        $this->call(
+        return $this->call(
             'alphacruds:make-form-view',
             array_merge(
                 [
@@ -98,9 +110,9 @@ class ViewsMakeCommand extends Command
         );
     }
 
-    private function createTableView(string $module): void
+    private function createTableView(string $module): int
     {
-        $this->call(
+        return $this->call(
             'alphacruds:make-table-view',
             array_merge(
                 [
