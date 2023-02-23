@@ -11,7 +11,7 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <form action="{{route('alphacruds.create')}}" method="post" id="crudForm">
+            <form action="{{route('alphacruds.curd-generator.create')}}" method="post" id="crudForm">
                 @csrf
 
                 @include('alphacruds::components.input_group', [
@@ -55,7 +55,6 @@
 @push('scripts')
     <script type="application/javascript" defer>
 
-        let counter = 0;
         document.getElementById('addField').onclick = () => {
             const container = document.getElementById('crudForm');
             const label = document.createElement('label');

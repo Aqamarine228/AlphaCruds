@@ -40,6 +40,7 @@ class ControllerMakeCommand extends GeneratorCommand
             'MODEL_NAMESPACE' => $this->getModelNamespace(),
             'BASE_CONTROLLER' => $this->getBaseControllerPath($module->getStudlyName()),
             'REQUEST' => $this->getRequestPath(),
+            'TRANSLATED_FIELDS' => $this->getTranslatedFields(),
         ]))->render();
     }
 
@@ -72,7 +73,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     protected function getStubName(): string
     {
-        return '/controller.stub';
+        return $this->getTranslatedFields() ? '/controller-translations.stub' : '/controller.stub';
     }
 
     protected function getArguments(): array
@@ -89,7 +90,8 @@ class ControllerMakeCommand extends GeneratorCommand
             ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the request already exists'],
             ['model-namespace', 'mn', InputOption::VALUE_OPTIONAL, 'Namespace of model which will CRUD class use.'],
             ['base', 'b', InputOption::VALUE_OPTIONAL, 'Namespace of class which will CRUD class extend.'],
-            ['request', 'r', InputOption::VALUE_OPTIONAL, 'Namespace of request which will CRUD class use for validation.'],
+            ['translations', 't', InputOption::VALUE_OPTIONAL, 'Fields that will be translated to multiple languages.'],
+            ['request', 'r', InputOption::VALUE_OPTIONAL, 'Namespace of request which will CRUD use for validation.'],
         ];
     }
 
@@ -101,6 +103,11 @@ class ControllerMakeCommand extends GeneratorCommand
     private function getModelName(): string
     {
         return Str::studly($this->argument('model'));
+    }
+
+    private function getTranslatedFields(): ?string
+    {
+        return $this->option('translations') ? base64_decode($this->option('translations')) : null;
     }
 
     public function getModelNamespace(): string

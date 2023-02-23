@@ -1,6 +1,6 @@
 <?php
 
-namespace AlphaDevTeam\AlphaCruds\Commands;
+namespace AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands;
 
 use Illuminate\Support\Str;
 use Nwidart\Modules\Commands\GeneratorCommand;
