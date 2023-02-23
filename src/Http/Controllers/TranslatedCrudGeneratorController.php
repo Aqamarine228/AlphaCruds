@@ -2,22 +2,24 @@
 
 namespace AlphaDevTeam\AlphaCruds\Http\Controllers;
 
-use Artisan;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 
-class CurdGeneratorController extends BaseAlphaCrudsController
+class TranslatedCrudGeneratorController extends BaseAlphaCrudsController
 {
     private string $model;
     private string $module;
     private bool $force;
     private array $fields;
     private array $types;
+    private array $translatedFields;
+    private array $translatedTypes;
     public function index(): View
     {
-        return $this->view('crud-generator');
+        return $this->view('translated-crud-generator');
     }
 
     public function create(Request $request): RedirectResponse
@@ -27,7 +29,9 @@ class CurdGeneratorController extends BaseAlphaCrudsController
             'model' => 'string|required',
             'force' => 'nullable',
             'fields' => 'array|nullable',
-            'types' => 'array|nullable'
+            'types' => 'array|nullable',
+            'translated_fields' => 'array|nullable',
+            'translated_types' => 'array|nullable',
         ]);
 
         $this->model = $validated['model'];
@@ -35,6 +39,8 @@ class CurdGeneratorController extends BaseAlphaCrudsController
         $this->force = isset($validated['force']);
         $this->fields = $validated['fields'] ?? [];
         $this->types = $validated['types'] ?? [];
+        $this->translatedFields = $validated['translated_fields'] ?? [];
+        $this->translatedTypes = $validated['translated_types'] ?? [];
 
         $this->createModel();
         $this->createController();
@@ -54,8 +60,9 @@ class CurdGeneratorController extends BaseAlphaCrudsController
             'alphacruds:make-model',
             array_merge([
                 'model' => $this->model,
-                'fillable' => $this->createFillableFields(),
+                'fillable' => $this->generateFillableFields(),
                 'module' => $this->module,
+                '-t' => $this->generateTranslatedFields(),
             ], $this->force ? ['-f' => true] : [])
         );
     }
@@ -67,6 +74,7 @@ class CurdGeneratorController extends BaseAlphaCrudsController
             array_merge([
                 'model' => $this->model,
                 'module' => $this->module,
+                '-t' => $this->generateTranslatedFields(),
             ], $this->force ? ['-f' => true] : [])
         );
     }
@@ -77,8 +85,8 @@ class CurdGeneratorController extends BaseAlphaCrudsController
             'alphacruds:make-request',
             array_merge([
                 'model' => $this->model,
-                'create-fields' => $this->createCreateFields(),
-                'update-fields' => $this->createUpdateFields(),
+                'create-fields' => $this->generateCreateFields(),
+                'update-fields' => $this->generateUpdateFields(),
                 'module' => $this->module,
             ], $this->force ? ['-f' => true] : [])
         );
@@ -90,8 +98,9 @@ class CurdGeneratorController extends BaseAlphaCrudsController
             'alphacruds:make-views',
             array_merge([
                 'model' => $this->model,
-                'fields' => $this->createInputFields(),
+                'fields' => $this->generateInputFields(),
                 'module' => $this->module,
+                '-t' => $this->generateTranslatedInputFields(),
             ], $this->force ? ['-f' => true] : [])
         );
     }
@@ -103,11 +112,12 @@ class CurdGeneratorController extends BaseAlphaCrudsController
             array_merge([
                 'model' => $this->model,
                 'module' => $this->module,
+                '-t' => true,
             ], $this->force ? ['-f' => true] : [])
         );
     }
 
-    private function createFillableFields(): string
+    private function generateFillableFields(): string
     {
         $result = [];
         foreach ($this->fields as $field) {
@@ -117,26 +127,40 @@ class CurdGeneratorController extends BaseAlphaCrudsController
         return base64_encode('["'.implode('","', $result).'"]');
     }
 
-    private function createCreateFields(): string
+    private function generateTranslatedFields(): string
+    {
+        $result = [];
+        foreach ($this->translatedFields as $field) {
+            $result[] = Str::snake($field);
+        }
+
+        return base64_encode('["'.implode('","', $result).'"]');
+    }
+
+    private function generateCreateFields(): string
     {
         $result = '[';
-        for ($i = 0; $i < sizeof($this->fields); $i++) {
-            $result.= '"'.Str::snake($this->fields[$i])
+        $fields = array_merge($this->fields, $this->translatedFields, ['language_code']);
+        $types = array_merge($this->types, $this->translatedTypes, ['exists:languages,code']);
+        for ($i = 0; $i < sizeof($fields); $i++) {
+            $result.= '"'.Str::snake($fields[$i])
                 .'"=>["'
-                .$this->toValidationType($this->types[$i])
+                .$this->toValidationType($types[$i])
                 .'","required"],';
         }
 
         return base64_encode($result.']');
     }
 
-    private function createUpdateFields(): string
+    private function generateUpdateFields(): string
     {
         $result = '[';
-        for ($i = 0; $i < sizeof($this->fields); $i++) {
-            $result.= '"'.Str::snake($this->fields[$i])
+        $fields = array_merge($this->fields, $this->translatedFields, ['language_code']);
+        $types = array_merge($this->types, $this->translatedTypes, ['exists:languages,code']);
+        for ($i = 0; $i < sizeof($fields); $i++) {
+            $result.= '"'.Str::snake($fields[$i])
                 .'"=>["'
-                .$this->toValidationType($this->types[$i])
+                .$this->toValidationType($types[$i])
                 .'"],';
         }
 
@@ -148,10 +172,11 @@ class CurdGeneratorController extends BaseAlphaCrudsController
         return match ($type) {
             'text' => 'string',
             'number' => 'numeric',
+            default => $type,
         };
     }
 
-    private function createInputFields(): string
+    private function generateInputFields(): string
     {
         $result = '[';
         for ($i = 0; $i < sizeof($this->fields); $i++) {
@@ -163,4 +188,18 @@ class CurdGeneratorController extends BaseAlphaCrudsController
 
         return base64_encode($result.']');
     }
+
+    private function generateTranslatedInputFields(): string
+    {
+        $result = '[';
+        for ($i = 0; $i < sizeof($this->translatedFields); $i++) {
+            $result.= '"'.Str::snake($this->translatedFields[$i])
+                .'"=>["'
+                .$this->translatedTypes[$i]
+                .'"],';
+        }
+
+        return base64_encode($result.']');
+    }
+
 }

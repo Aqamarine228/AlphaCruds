@@ -1,0 +1,19 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
+class $CLASS$ extends \$PARENT_MODEL_NAMESPACE$\$MODEL_NAME$
+{
+    use HasFactory;
+
+    protected $fillable = $FILLABLE$;
+
+    public function translations(): BelongsToMany
+    {
+        return $this->belongsToMany(Language::class, '$MODEL_SNAKE$_language', '$MODEL_SNAKE$_id', 'language_code')
+                ->withPivot($TRANSLATED_FIELDS$);
+    }
+}
