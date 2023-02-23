@@ -15,6 +15,8 @@ class CurdGeneratorController extends BaseAlphaCrudsController
     private bool $force;
     private array $fields;
     private array $types;
+
+    private bool $errors = false;
     public function index(): View
     {
         return $this->view('crud-generator');
@@ -42,7 +44,7 @@ class CurdGeneratorController extends BaseAlphaCrudsController
         $this->createViews();
         $this->createRoutes();
 
-        $this->showSuccessMessage('CRUD created successfully.');
+        !$this->errors && $this->showSuccessMessage('CRUD created successfully.');
 
 
         return back();
@@ -50,64 +52,72 @@ class CurdGeneratorController extends BaseAlphaCrudsController
 
     private function createModel(): void
     {
-        Artisan::call(
+        $this->handleCommandOutput(Artisan::call(
             'alphacruds:make-model',
             array_merge([
                 'model' => $this->model,
-                'fillable' => $this->createFillableFields(),
+                'fillable' => $this->generateFillableFields(),
                 'module' => $this->module,
             ], $this->force ? ['-f' => true] : [])
-        );
+        ));
     }
 
     private function createController(): void
     {
-        Artisan::call(
+        $this->handleCommandOutput(Artisan::call(
             'alphacruds:make-controller',
             array_merge([
                 'model' => $this->model,
                 'module' => $this->module,
             ], $this->force ? ['-f' => true] : [])
-        );
+        ));
     }
 
     private function createRequest(): void
     {
-        Artisan::call(
+        $this->handleCommandOutput(Artisan::call(
             'alphacruds:make-request',
             array_merge([
                 'model' => $this->model,
-                'create-fields' => $this->createCreateFields(),
-                'update-fields' => $this->createUpdateFields(),
+                'create-fields' => $this->generateCreateFields(),
+                'update-fields' => $this->generateUpdateFields(),
                 'module' => $this->module,
             ], $this->force ? ['-f' => true] : [])
-        );
+        ));
     }
 
     private function createViews(): void
     {
-        Artisan::call(
+        $this->handleCommandOutput(Artisan::call(
             'alphacruds:make-views',
             array_merge([
                 'model' => $this->model,
-                'fields' => $this->createInputFields(),
+                'fields' => $this->generateInputFields(),
                 'module' => $this->module,
             ], $this->force ? ['-f' => true] : [])
-        );
+        ));
     }
 
     private function createRoutes(): void
     {
-        Artisan::call(
+        $this->handleCommandOutput(Artisan::call(
             'alphacruds:make-routes',
             array_merge([
                 'model' => $this->model,
                 'module' => $this->module,
             ], $this->force ? ['-f' => true] : [])
-        );
+        ));
     }
 
-    private function createFillableFields(): string
+    private function handleCommandOutput(int $result): void
+    {
+        if ($result == 1) {
+            $this->showErrorMessage(Artisan::output());
+            $this->errors = true;
+        }
+    }
+
+    private function generateFillableFields(): string
     {
         $result = [];
         foreach ($this->fields as $field) {
@@ -117,7 +127,7 @@ class CurdGeneratorController extends BaseAlphaCrudsController
         return base64_encode('["'.implode('","', $result).'"]');
     }
 
-    private function createCreateFields(): string
+    private function generateCreateFields(): string
     {
         $result = '[';
         for ($i = 0; $i < sizeof($this->fields); $i++) {
@@ -130,7 +140,7 @@ class CurdGeneratorController extends BaseAlphaCrudsController
         return base64_encode($result.']');
     }
 
-    private function createUpdateFields(): string
+    private function generateUpdateFields(): string
     {
         $result = '[';
         for ($i = 0; $i < sizeof($this->fields); $i++) {
@@ -151,7 +161,7 @@ class CurdGeneratorController extends BaseAlphaCrudsController
         };
     }
 
-    private function createInputFields(): string
+    private function generateInputFields(): string
     {
         $result = '[';
         for ($i = 0; $i < sizeof($this->fields); $i++) {
