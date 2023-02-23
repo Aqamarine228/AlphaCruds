@@ -3,10 +3,10 @@
 namespace AlphaDevTeam\AlphaCruds;
 
 use AlphaDevTeam\AlphaCruds\Commands\ControllerMakeCommand;
-use AlphaDevTeam\AlphaCruds\Commands\CreateViewMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\ModelMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\RequestMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\RoutesMakeCommand;
+use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\CreateViewMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\EditViewMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\FormViewMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\IndexViewMakeCommand;

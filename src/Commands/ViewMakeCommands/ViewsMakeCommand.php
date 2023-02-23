@@ -31,10 +31,14 @@ class ViewsMakeCommand extends Command
     {
         $this->call(
             'alphacruds:make-create-view',
-            array_merge([
+            array_merge(
+                [
                 'model' => $this->getModelName(),
                 'module' => $module,
-            ], $this->option('force') ? ['-f' => true] : [])
+                ],
+                $this->option('force') ? ['-f' => true] : [],
+                $this->option('translations') ? ['-t' => true] : [],
+            )
         );
     }
     private function createIndexView(string $module): void
@@ -52,21 +56,29 @@ class ViewsMakeCommand extends Command
     {
         $this->call(
             'alphacruds:make-show-view',
-            array_merge([
-                'model' => $this->getModelName(),
-                'fields' => $this->getFieldsKeys(),
-                'module' => $module,
-            ], $this->option('force') ? ['-f' => true] : [])
+            array_merge(
+                [
+                    'model' => $this->getModelName(),
+                    'fields' => $this->getFieldsKeys(),
+                    'module' => $module,
+                ],
+                $this->option('force') ? ['-f' => true] : [],
+                $this->option('translations') ? ['-t' => $this->getTranslatedFieldsKeys()] : [],
+            )
         );
     }
     private function createEditView(string $module): void
     {
         $this->call(
             'alphacruds:make-edit-view',
-            array_merge([
-                'model' => $this->getModelName(),
-                'module' => $module,
-            ], $this->option('force') ? ['-f' => true] : [])
+            array_merge(
+                [
+                    'model' => $this->getModelName(),
+                    'module' => $module,
+                ],
+                $this->option('force') ? ['-f' => true] : [],
+                $this->option('translations') ? ['-t' => true] : [],
+            )
         );
     }
 
@@ -74,11 +86,15 @@ class ViewsMakeCommand extends Command
     {
         $this->call(
             'alphacruds:make-form-view',
-            array_merge([
-                'model' => $this->getModelName(),
-                'fields' => $this->argument('fields'),
-                'module' => $module,
-            ], $this->option('force') ? ['-f' => true] : [])
+            array_merge(
+                [
+                    'model' => $this->getModelName(),
+                    'fields' => $this->argument('fields'),
+                    'module' => $module,
+                ],
+                $this->option('force') ? ['-f' => true] : [],
+                $this->option('translations') ? ['-t' => $this->option('translations')] : [],
+            )
         );
     }
 
@@ -86,11 +102,15 @@ class ViewsMakeCommand extends Command
     {
         $this->call(
             'alphacruds:make-table-view',
-            array_merge([
-                'model' => $this->getModelName(),
-                'fields' => $this->getFieldsKeys(),
-                'module' => $module,
-            ], $this->option('force') ? ['-f' => true] : [])
+            array_merge(
+                [
+                    'model' => $this->getModelName(),
+                    'fields' => $this->getFieldsKeys(),
+                    'module' => $module,
+                ],
+                $this->option('force') ? ['-f' => true] : [],
+                $this->option('translations') ? ['-t' => $this->getTranslatedFieldsKeys()] : [],
+            )
         );
     }
 
@@ -102,9 +122,26 @@ class ViewsMakeCommand extends Command
     private function getFieldsKeys(): string
     {
         eval('$array=' . base64_decode($this->argument('fields')) . ';');
+
         if (sizeof($array) == 0) {
             return base64_encode('[]');
         }
+
+        return base64_encode(
+            '["'
+            . implode('","', array_keys($array))
+            . '"]'
+        );
+    }
+
+    private function getTranslatedFieldsKeys(): string
+    {
+        eval('$array=' . base64_decode($this->option('translations')) . ';');
+
+        if (sizeof($array) == 0) {
+            return base64_encode('[]');
+        }
+
         return base64_encode(
             '["'
             . implode('","', array_keys($array))
@@ -125,6 +162,7 @@ class ViewsMakeCommand extends Command
     {
         return [
             ['force', 'f', InputOption::VALUE_NONE, 'Recreate existing views.'],
+            ['translations', 't', InputOption::VALUE_OPTIONAL, 'Fields that will be translated to multiple languages.'],
         ];
     }
 }

@@ -13,7 +13,7 @@ class $CLASS$ extends \$PARENT_MODEL_NAMESPACE$\$MODEL_NAME$
 
     public function translations(): BelongsToMany
     {
-        return $this->belongsToMany(Language::class, '$MODEL_SNAKE$_language', '$MODEL_SNAKE$_id', 'language_code')
+        return $this->belongsToMany(Language::class, '$MODEL_SNAKE$_language', '$MODEL_SNAKE$_id', 'language_id')
                 ->withPivot($TRANSLATED_FIELDS$);
     }
 }

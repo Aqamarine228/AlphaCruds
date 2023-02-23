@@ -1,0 +1,53 @@
+<form action="{{ $model->exists ? route('$LOWER_NAME$.$MODEL_KEBAB$.update', $model->id) : route('$LOWER_NAME$.$MODEL_KEBAB$.store') }}" method="POST">
+
+    @csrf
+    @if ($model->exists)
+        @method('PUT')
+    @endif
+$FIELDS$
+
+    @if (!($model->exists))
+    <select class="form-control mb-3" name="language_code" style="max-width: 150px">
+        @foreach($languages as $language)
+            <option value="{{$language->code}}">{{$language->name}}</option>
+        @endforeach
+    </select>
+$TRANSLATED_FIELDS$
+    @endif
+
+    <button class="btn btn-primary mt-lg-4" type="submit">
+        <i class="fa fa-save"></i>
+        {{ $model->exists ? 'Update' : 'Save' }}
+    </button>
+</form>
+
+@if ($model->exists)
+<form action="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.update-translated-fields', $model->id) }}" method="POST">
+
+    @csrf
+    @method('PUT')
+
+    <select
+      class="form-control mb-3 mt-3"
+      onChange="window.location.href='{{route('$LOWER_NAME$.$MODEL_KEBAB$.edit', $model->id) . '?language_code='}}'+this.value"
+      style="max-width: 150px"
+      name="language_code"
+    >
+        @foreach($languages as $language)
+            <option
+             value="{{$language->code}}"
+             {{$language->code === request()->input('language_code') ? 'selected' : ''}}
+            >
+                {{$language->name}}
+            </option>
+        @endforeach
+    </select>
+
+$TRANSLATED_FIELDS$
+
+    <button class="btn btn-primary mt-lg-4" type="submit">
+        <i class="fa fa-save"></i>
+        Update Translated
+    </button>
+</form>
+@endif

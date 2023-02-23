@@ -24,6 +24,7 @@ class RoutesMakeCommand extends GeneratorCommand
         return (new Stub($this->getStubName(), [
             'CONTROLLER_PATH' => $this->getControllerPath(),
             'MODEL_KEBAB' => $this->getModelKebabName(),
+            'MODEL_CAMEL' => $this->getModelCamelName(),
         ]))->render();
     }
 

@@ -17,15 +17,20 @@ class FormViewMakeCommand extends ViewMakeCommand
 
     protected array $additionalOptions = [
         ['components-path', 'cp', InputOption::VALUE_OPTIONAL, 'Path to required view components.'],
+        ['translations', 't', InputOption::VALUE_OPTIONAL, 'Fields that will be translated to multiple languages.'],
     ];
+
     protected function getTemplateContents(): bool|array|string
     {
         $module = $this->laravel['modules']->findOrFail($this->getModuleName());
 
-        return (new Stub($this->getViewStubName('_form'), [
+        return (new Stub($this->getViewStubName($this->getViewName()), [
             'MODEL_KEBAB' => $this->getModelKebabName(),
             'LOWER_NAME' => $module->getLowerName(),
             'FIELDS' => $this->generateFields($module->getLowerName()),
+            'TRANSLATED_FIELDS' => $this->getTranslatedFields()
+                ? $this->generateTranslatedFields($module->getLowerName())
+                : null,
         ]))->render();
     }
 
@@ -48,6 +53,37 @@ class FormViewMakeCommand extends ViewMakeCommand
             ])";
         }
         return $result;
+    }
+
+    protected function generateTranslatedFields(string $lowerName): string
+    {
+        $result = "";
+        $componentPath = $this->getComponentsPath();
+        eval('$fields=' . $this->getTranslatedFields() . ';');
+        foreach ($fields as $key => $value) {
+            $label = Str::title($key);
+            $result .= "
+
+            @include('$lowerName::$componentPath.input_group', [
+                'type' => '$value[0]',
+                'required' => true,
+                'label' => '$label',
+                'name' => '$key',
+                'placeholder' => '$key',
+                'defaultValue' => \$model->translations->first()?->pivot->$key
+            ])";
+        }
+        return $result;
+    }
+
+    private function getViewName(): string
+    {
+        return (bool)$this->getTranslatedFields() ? '_form-translated' : '_form';
+    }
+
+    private function getTranslatedFields(): ?string
+    {
+        return $this->option('translations') ? base64_decode($this->option('translations')) : null;
     }
 
     protected function getViewPath(): string

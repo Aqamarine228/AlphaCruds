@@ -1,0 +1,25 @@
+<table class="table table-striped mb-4 posts-table">
+    <thead>
+    <tr>
+        <th>ID</th>
+        $TABLE_HEADERS$
+        <th>Language Code</th>
+        $TRANSLATED_TABLE_HEADERS$
+    </tr>
+    </thead>
+    <tbody>
+    @foreach($$MODEL_CAMEL_NAME$s as $$MODEL_CAMEL_NAME$)
+        <tr>
+            <td>
+                <a href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.show', $$MODEL_CAMEL_NAME$->id) }}">{{ $$MODEL_CAMEL_NAME$->id }}</a>
+            </td>
+            $TABLE_BODY$
+            <td>
+                {{ $$MODEL_CAMEL_NAME$->translations->first()->code }}
+            </td>
+            $TRANSLATED_TABLE_BODY$
+        </tr>
+    @endforeach
+    </tbody>
+</table>
+{{ $$MODEL_CAMEL_NAME$s->links() }}
