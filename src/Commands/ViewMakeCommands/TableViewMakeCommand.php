@@ -16,7 +16,7 @@ class TableViewMakeCommand extends ViewMakeCommand
     ];
 
     protected array $additionalOptions = [
-        ['translations', 't', InputOption::VALUE_NONE, 'Fields that will be translated to multiple languages.'],
+        ['translations', 't', InputOption::VALUE_OPTIONAL, 'Fields that will be translated to multiple languages.'],
     ];
     protected function getTemplateContents(): bool|array|string
     {
@@ -29,12 +29,6 @@ class TableViewMakeCommand extends ViewMakeCommand
             'FIELDS' => $this->getFields(),
             'TABLE_HEADERS' => $this->generateTableHeaders(),
             'TABLE_BODY' => $this->generateTableBody(),
-            'TRANSLATED_TABLE_HEADERS' => $this->option('translations')
-                ? $this->generateTranslatedTableHeaders()
-                : null,
-            'TRANSLATED_TABLE_BODY' => $this->option('translations')
-                ? $this->generateTranslatedTableBody()
-                : null,
         ]))->render();
     }
 
@@ -55,18 +49,6 @@ class TableViewMakeCommand extends ViewMakeCommand
         return $result;
     }
 
-    protected function generateTranslatedTableHeaders(): string
-    {
-        $result = "";
-        eval('$fields=' . $this->getTranslatedFields() . ';');
-        foreach ($fields as $field) {
-            $title = Str::title($field);
-            $result .= "
-        <th>$title</th>";
-        }
-        return $result;
-    }
-
     protected function generateTableBody(): string
     {
         $result = "";
@@ -79,18 +61,6 @@ class TableViewMakeCommand extends ViewMakeCommand
         return $result;
     }
 
-    protected function generateTranslatedTableBody(): string
-    {
-        $result = "";
-        $modelKebab = $this->getModelKebabName();
-        eval('$fields=' . $this->getTranslatedFields() . ';');
-        foreach ($fields as $field) {
-            $result .= "
-            <td>{{\$$modelKebab"."->translations->first()?->pivot->"."$field}}</td>";
-        }
-        return $result;
-    }
-
     protected function getViewPath(): string
     {
         return 'blocks/_table';
@@ -99,10 +69,5 @@ class TableViewMakeCommand extends ViewMakeCommand
     private function getFields(): string
     {
         return base64_decode($this->argument('fields'));
-    }
-
-    private function getTranslatedFields(): ?string
-    {
-        return $this->option('translations') ? base64_decode($this->option('translations')) : null;
     }
 }
