@@ -12,8 +12,8 @@ class $CLASS$ extends \$BASE_CONTROLLER$
 {
     public function index(Request $request): View
     {
-        $$MODEL_CAMEL_NAME$s = $MODEL_NAME$::with(['translations' => static function ($query) use ($request) {
-            $query->where('code', $request?->user()?->language_code);
+        $$MODEL_CAMEL_NAME$s = $MODEL_NAME$::with(['translations' => static function ($query) {
+            $query->select('code');
         }])->paginate();
         return $this->view('$MODEL_CAMEL_NAME$.index', ['$MODEL_CAMEL_NAME$s' => $$MODEL_CAMEL_NAME$s]);
     }
