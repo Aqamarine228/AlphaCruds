@@ -121,7 +121,7 @@ class ViewsMakeCommand extends Command
                     'module' => $module,
                 ],
                 $this->option('force') ? ['-f' => true] : [],
-                $this->option('translations') ? ['-t' => $this->getTranslatedFieldsKeys()] : [],
+                $this->option('translations') ? ['-t' => true] : [],
             )
         );
     }

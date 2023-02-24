@@ -3,8 +3,7 @@
     <tr>
         <th>ID</th>
         $TABLE_HEADERS$
-        <th>Language Code</th>
-        $TRANSLATED_TABLE_HEADERS$
+        <th>Translated To</th>
     </tr>
     </thead>
     <tbody>
@@ -15,9 +14,8 @@
             </td>
             $TABLE_BODY$
             <td>
-                {{ $$MODEL_CAMEL_NAME$->translations->first()?->code }}
+                {{ implode(', ', $$MODEL_CAMEL_NAME$->translations->pluck('code')->toArray()) }}
             </td>
-            $TRANSLATED_TABLE_BODY$
         </tr>
     @endforeach
     </tbody>
