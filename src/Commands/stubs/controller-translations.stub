@@ -28,7 +28,7 @@ class $CLASS$ extends \$BASE_CONTROLLER$
     {
         $languageCode = $request->exists('language_code')
                         ? $request->input('language_code')
-                        : $request?->user()?->language_code;
+                        : $request->user()?->language_code;
 
         $$MODEL_CAMEL_NAME$->load(['translations' => static function ($query) use ($languageCode) {
             $query->where('code', $languageCode);
@@ -52,7 +52,7 @@ class $CLASS$ extends \$BASE_CONTROLLER$
     {
         $languageCode = $request->exists('language_code')
                 ? $request->input('language_code')
-                : $request?->user()?->language_code;
+                : $request->user()?->language_code;
 
         $$MODEL_CAMEL_NAME$->load(['translations' => static function ($query) use ($languageCode) {
             $query->where('code', $languageCode);
