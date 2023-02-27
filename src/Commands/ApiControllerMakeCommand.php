@@ -39,9 +39,7 @@ class ApiControllerMakeCommand extends GeneratorCommand
             'MODEL_CAMEL_NAME' => $this->getModelCamelName(),
             'MODEL_NAMESPACE' => $this->getModelNamespace(),
             'BASE_CONTROLLER' => $this->getBaseControllerPath($module->getStudlyName()),
-            'REQUEST' => $this->getRequestPath(),
             'RESOURCE' => $this->getResourcePath(),
-            'TRANSLATED_FIELDS' => $this->getTranslatedFields(),
         ]))->render();
     }
 
@@ -64,7 +62,7 @@ class ApiControllerMakeCommand extends GeneratorCommand
 
     protected function getStubName(): string
     {
-        return $this->option('translations') ? '/api-controller-translations.stub' : '/api-controller.stub';
+        return '/api-controller.stub';
     }
 
     private function getModelCamelName(): string
@@ -87,11 +85,6 @@ class ApiControllerMakeCommand extends GeneratorCommand
         return $this->getModelName() . 'Controller';
     }
 
-    private function getTranslatedFields(): ?string
-    {
-        return $this->option('translations') ? base64_decode($this->option('translations')) : null;
-    }
-
     public function getModelNamespace(): string
     {
         if ($this->option('model-namespace')) {
@@ -106,25 +99,6 @@ class ApiControllerMakeCommand extends GeneratorCommand
             . $this->laravel['modules']->findOrFail($this->getModuleName())
             . '\\'
             . $path;
-    }
-
-    public function getRequestPath(): string
-    {
-        if ($this->option('request')) {
-            return $this->option('request');
-        }
-
-        $path = $this->laravel['modules']->config('paths.generator.request.path', 'Http/Requests');
-        $path = str_replace('/', '\\', $path);
-
-        return $this->laravel['modules']->config('namespace')
-            . '\\'
-            . $this->laravel['modules']->findOrFail($this->getModuleName())
-            . '\\'
-            . $path
-            . '\\'
-            . $this->getModelName()
-            . 'Request';
     }
 
     public function getBaseControllerPath(string $module): string
@@ -181,8 +155,6 @@ class ApiControllerMakeCommand extends GeneratorCommand
             ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the request already exists'],
             ['model-namespace', 'mn', InputOption::VALUE_OPTIONAL, 'Namespace of model which will CRUD class use.'],
             ['base', 'b', InputOption::VALUE_OPTIONAL, 'Namespace of class which will CRUD class extend.'],
-            ['translations', 't', InputOption::VALUE_OPTIONAL, 'Fields that will be translated to multiple languages.'],
-            ['request', 'r', InputOption::VALUE_OPTIONAL, 'Namespace of request which will CRUD use for validation.'],
             ['resource', 're', InputOption::VALUE_OPTIONAL, 'Namespace of resource which will be used.'],
         ];
     }

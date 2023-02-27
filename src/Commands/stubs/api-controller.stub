@@ -17,22 +17,4 @@ class $CLASS$ extends \$BASE_CONTROLLER$
     {
         return $this->respondSuccess(new \$RESOURCE$($$MODEL_CAMEL_NAME$));
     }
-
-    public function store(\$REQUEST$ $request): JsonResponse
-    {
-        $MODEL_NAME$::create($request->validated());
-        return $this->respondSuccess('$MODEL_NAME$ created successfully.');
-    }
-
-    public function update(\$REQUEST$ $request, $MODEL_NAME$ $$MODEL_CAMEL_NAME$): JsonResponse
-    {
-        $$MODEL_CAMEL_NAME$->update($request->validated());
-        return $this->respondSuccess('$MODEL_NAME$ updated successfully.');
-    }
-
-    public function destroy($MODEL_NAME$ $$MODEL_CAMEL_NAME$): JsonResponse
-    {
-        $$MODEL_CAMEL_NAME$->delete();
-        return $this->respondSuccess('$MODEL_NAME$ deleted successfully.');
-    }
 }
