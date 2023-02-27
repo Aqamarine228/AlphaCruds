@@ -1,0 +1,15 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class $CLASS$ extends JsonResource
+{
+    public function toArray($request): array
+    {
+        return [
+        $FIELDS$
+        ];
+    }
+}
