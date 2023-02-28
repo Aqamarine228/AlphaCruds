@@ -2,13 +2,12 @@
 
 namespace AlphaDevTeam\AlphaCruds\Http\Controllers;
 
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 
-class TranslatedCrudGeneratorController extends BaseAlphaCrudsController
+class TranslatedCrudCrudGeneratorController extends BaseCrudGeneratorController
 {
     private string $model;
     private string $module;
@@ -20,9 +19,9 @@ class TranslatedCrudGeneratorController extends BaseAlphaCrudsController
 
     private bool $errors = false;
 
-    public function index(): View
+    protected function getIndexView(): string
     {
-        return $this->view('translated-crud-generator');
+        return 'translated-crud-generator';
     }
 
     public function create(Request $request): RedirectResponse
