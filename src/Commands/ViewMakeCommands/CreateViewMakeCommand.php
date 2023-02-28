@@ -9,15 +9,11 @@ class CreateViewMakeCommand extends ViewMakeCommand
 {
     protected $name = 'alphacruds:make-create-view';
 
-    protected array $additionalOptions = [
-        ['translations', 't', InputOption::VALUE_NONE, 'Fields that will be translated to multiple languages.'],
-    ];
-
     protected function getTemplateContents(): bool|array|string
     {
         $module = $this->laravel['modules']->findOrFail($this->getModuleName());
 
-        return (new Stub($this->getViewStubName($this->getViewName()), [
+        return (new Stub($this->getViewStubName('create'), [
             'LAYOUT' => $this->getLayout(),
             'ENTITY_NAME' => $this->getEntityName(),
             'MODEL_KEBAB' => $this->getModelKebabName(),
@@ -26,11 +22,6 @@ class CreateViewMakeCommand extends ViewMakeCommand
             'MODEL_NAMESPACE' => $this->getModelNamespace(),
             'MODEL_NAME' => $this->getModelName(),
         ]))->render();
-    }
-
-    private function getViewName(): string
-    {
-        return $this->option('translations') ? 'create-translated' : 'create';
     }
 
     protected function getViewPath(): string

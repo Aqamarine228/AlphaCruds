@@ -18,12 +18,6 @@ class $CLASS$ extends \$BASE_CONTROLLER$
         return $this->view('$MODEL_CAMEL_NAME$.index', ['$MODEL_CAMEL_NAME$s' => $$MODEL_CAMEL_NAME$s]);
     }
 
-    public function create(): View
-    {
-        $languages = Language::all();
-        return $this->view('$MODEL_CAMEL_NAME$.create', ['languages' => $languages]);
-    }
-
     public function show(Request $request, $MODEL_NAME$ $$MODEL_CAMEL_NAME$): View
     {
         $languageCode = $request->exists('language_code')
@@ -48,15 +42,21 @@ class $CLASS$ extends \$BASE_CONTROLLER$
         ]);
     }
 
-    public function edit(Request $request, $MODEL_NAME$ $$MODEL_CAMEL_NAME$): View
+    public function edit(Request $request, int $$MODEL_CAMEL_NAME$Id): View
     {
         $languageCode = $request->exists('language_code')
                 ? $request->input('language_code')
                 : $request->user()?->language_code;
 
-        $$MODEL_CAMEL_NAME$->load(['translations' => static function ($query) use ($languageCode) {
-            $query->where('code', $languageCode);
-        }]);
+        $$MODEL_CAMEL_NAME$ = $MODEL_NAME$::find($$MODEL_CAMEL_NAME$Id);
+
+        if ($$MODEL_CAMEL_NAME$) {
+            $$MODEL_CAMEL_NAME$->load(['translations' => static function ($query) use ($languageCode) {
+                    $query->where('code', $languageCode);
+            }]);
+        } else {
+           $$MODEL_CAMEL_NAME$ = new $MODEL_NAME$;
+        }
 
         $languages = Language::all();
         return $this->view('$MODEL_CAMEL_NAME$.edit', [
@@ -65,14 +65,12 @@ class $CLASS$ extends \$BASE_CONTROLLER$
         ]);
     }
 
-    public function store(\$REQUEST$ $request): RedirectResponse
+    public function store(): RedirectResponse
     {
-        $validated = $request->validated();
-        $$MODEL_CAMEL_NAME$ = $MODEL_NAME$::create($validated);
-        $$MODEL_CAMEL_NAME$->translations()->attach($validated['language_code'], $request->only($TRANSLATED_FIELDS$));
+        $$MODEL_CAMEL_NAME$ = $MODEL_NAME$::create([]);
 
         $this->showSuccessMessage('$MODEL_NAME$ created successfully.');
-        return redirect(route('$LOWER_NAME$.$MODEL_CAMEL_NAME$.show', $$MODEL_CAMEL_NAME$->id));
+        return redirect(route('$LOWER_NAME$.$MODEL_CAMEL_NAME$.edit', $$MODEL_CAMEL_NAME$->id));
     }
 
     public function update(\$REQUEST$ $request, $MODEL_NAME$ $$MODEL_CAMEL_NAME$): RedirectResponse

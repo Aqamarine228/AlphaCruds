@@ -148,17 +148,7 @@ class TranslatedCrudCrudGeneratorController extends BaseCrudGeneratorController
 
     private function generateCreateFields(): string
     {
-        $result = '[';
-        $fields = array_merge($this->fields, $this->translatedFields, ['language_code']);
-        $types = array_merge($this->types, $this->translatedTypes, ['exists:languages,code']);
-        for ($i = 0; $i < sizeof($fields); $i++) {
-            $result.= '"'.Str::snake($fields[$i])
-                .'"=>["'
-                .$this->toValidationType($types[$i])
-                .'","required"],';
-        }
-
-        return base64_encode($result.']');
+        return base64_encode('[]');
     }
 
     private function generateUpdateFields(): string
@@ -170,7 +160,8 @@ class TranslatedCrudCrudGeneratorController extends BaseCrudGeneratorController
             $result.= '"'.Str::snake($fields[$i])
                 .'"=>["'
                 .$this->toValidationType($types[$i])
-                .'"],';
+                .'"],
+                ';
         }
 
         return base64_encode($result.']');

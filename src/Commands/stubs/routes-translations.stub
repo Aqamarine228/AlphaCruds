@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::resource('$MODEL_KEBAB$', \$CONTROLLER_PATH$::class);
+Route::resource('$MODEL_KEBAB$', \$CONTROLLER_PATH$::class)->except(['create', 'edit']);
+Route::get('/$MODEL_KEBAB$/edit/{$MODEL_CAMEL$Id?}', [\$CONTROLLER_PATH$::class, 'edit'])->name('$MODEL_KEBAB$.edit');
 Route::put('/$MODEL_KEBAB$/update-translated-fields/{$MODEL_CAMEL$}', [\$CONTROLLER_PATH$::class, 'updateTranslatedFields'])
        ->name('$MODEL_KEBAB$.update-translated-fields');
