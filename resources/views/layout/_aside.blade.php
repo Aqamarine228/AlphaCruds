@@ -31,6 +31,14 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{route('alphacruds.api-crud-generator')}}" class="nav-link">
+                        <em class="nav-icon fas fa-code"></em>
+                        <p>
+                            API Crud Generator
+                        </p>
+                    </a>
+                </li>
             </ul>
         </nav>
     </div>

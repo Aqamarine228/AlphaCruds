@@ -2,17 +2,13 @@
 
 namespace AlphaDevTeam\AlphaCruds\Http\Controllers;
 
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
-class TranslatedCrudGeneratorController extends BaseAlphaCrudsController
+class TranslatedCrudCrudGeneratorController extends BaseCrudGeneratorController
 {
-    use TableData;
-
     private string $model;
     private string $module;
     private bool $force;
@@ -23,24 +19,9 @@ class TranslatedCrudGeneratorController extends BaseAlphaCrudsController
 
     private bool $errors = false;
 
-    public function index(Request $request): View
+    protected function getIndexView(): string
     {
-        if (!$request->input('table')) {
-            return $this->view('translated-crud-generator');
-        }
-
-        if (!Schema::hasTable($request->input('table'))) {
-            $this->showErrorMessage('Table must exists in database.');
-            return $this->view('translated-crud-generator');
-        }
-
-        $fields = $this->getTableColumns($request->input('table'));
-        $model = Str::singular(Str::studly($request->input('table')));
-
-        return $this->view('translated-crud-generator', [
-            'model' => $model,
-            'fields' => $fields,
-        ]);
+        return 'translated-crud-generator';
     }
 
     public function create(Request $request): RedirectResponse

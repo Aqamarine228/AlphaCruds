@@ -2,16 +2,15 @@
 
 namespace AlphaDevTeam\AlphaCruds\Http\Controllers;
 
-use Artisan;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
-use Schema;
 
-class CurdGeneratorController extends BaseAlphaCrudsController
+class ApiCrudCrudGeneratorController extends BaseCrudGeneratorController
 {
-    use TableData;
 
     private string $model;
     private string $module;
@@ -20,24 +19,10 @@ class CurdGeneratorController extends BaseAlphaCrudsController
     private array $types;
 
     private bool $errors = false;
-    public function index(Request $request): View
+
+    protected function getIndexView(): string
     {
-        if (!$request->input('table')) {
-            return $this->view('crud-generator');
-        }
-
-        if (!Schema::hasTable($request->input('table'))) {
-            $this->showErrorMessage('Table must exists in database.');
-            return $this->view('crud-generator');
-        }
-
-        $fields = $this->getTableColumns($request->input('table'));
-        $model = Str::singular(Str::studly($request->input('table')));
-
-        return $this->view('crud-generator', [
-            'model' => $model,
-            'fields' => $fields,
-        ]);
+        return 'api-crud-generator';
     }
 
     public function create(Request $request): RedirectResponse
@@ -59,8 +44,8 @@ class CurdGeneratorController extends BaseAlphaCrudsController
         $this->createModel();
         $this->createController();
         $this->createRequest();
-        $this->createViews();
         $this->createRoutes();
+        $this->createResource();
 
         !$this->errors && $this->showSuccessMessage('CRUD created successfully.');
 
@@ -83,7 +68,7 @@ class CurdGeneratorController extends BaseAlphaCrudsController
     private function createController(): void
     {
         $this->handleCommandOutput(Artisan::call(
-            'alphacruds:make-controller',
+            'alphacruds:make-api-controller',
             array_merge([
                 'model' => $this->model,
                 'module' => $this->module,
@@ -104,24 +89,24 @@ class CurdGeneratorController extends BaseAlphaCrudsController
         ));
     }
 
-    private function createViews(): void
+    private function createRoutes(): void
     {
         $this->handleCommandOutput(Artisan::call(
-            'alphacruds:make-views',
+            'alphacruds:make-api-routes',
             array_merge([
                 'model' => $this->model,
-                'fields' => $this->generateInputFields(),
                 'module' => $this->module,
             ], $this->force ? ['-f' => true] : [])
         ));
     }
 
-    private function createRoutes(): void
+    private function createResource(): void
     {
         $this->handleCommandOutput(Artisan::call(
-            'alphacruds:make-routes',
+            'alphacruds:make-resource',
             array_merge([
                 'model' => $this->model,
+                'fields' => $this->generateResourceFields(),
                 'module' => $this->module,
             ], $this->force ? ['-f' => true] : [])
         ));
@@ -179,16 +164,14 @@ class CurdGeneratorController extends BaseAlphaCrudsController
         };
     }
 
-    private function generateInputFields(): string
+    private function generateResourceFields(): string
     {
-        $result = '[';
-        for ($i = 0; $i < sizeof($this->fields); $i++) {
-            $result.= '"'.Str::snake($this->fields[$i])
-                .'"=>["'
-                .$this->types[$i]
-                .'"],';
+        $result = [];
+        foreach ($this->fields as $field) {
+            $result[] = Str::snake($field);
         }
 
-        return base64_encode($result.']');
+        return base64_encode('["'.implode('","', $result).'"]');
     }
+
 }
