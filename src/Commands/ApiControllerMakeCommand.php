@@ -37,6 +37,7 @@ class ApiControllerMakeCommand extends GeneratorCommand
             'MODULE_NAMESPACE' => $this->laravel['modules']->config('namespace'),
             'MODEL_NAME' => $this->getModelName(),
             'MODEL_CAMEL_NAME' => $this->getModelCamelName(),
+            'MODEL_PLURAL_NAME' => $this->getModelPluralName(),
             'MODEL_NAMESPACE' => $this->getModelNamespace(),
             'BASE_CONTROLLER' => $this->getBaseControllerPath($module->getStudlyName()),
             'RESOURCE' => $this->getResourcePath(),
@@ -63,6 +64,11 @@ class ApiControllerMakeCommand extends GeneratorCommand
     protected function getStubName(): string
     {
         return '/api-controller.stub';
+    }
+
+    private function getModelPluralName(): string
+    {
+        return Str::plural($this->getModelName());
     }
 
     private function getModelCamelName(): string

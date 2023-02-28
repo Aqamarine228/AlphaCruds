@@ -21,6 +21,7 @@ class IndexViewMakeCommand extends ViewMakeCommand
         return (new Stub($this->getViewStubName($this->getViewName()), [
             'LAYOUT' => $this->getLayout(),
             'ENTITY_NAME' => $this->getEntityName(),
+            'ENTITY_PLURAL_NAME' => $this->getEntityPluralName(),
             'MODEL_KEBAB' => $this->getModelKebabName(),
             'MODEL_CAMEL_NAME' => $this->getModelCamelName(),
             'LOWER_NAME' => $module->getLowerName(),

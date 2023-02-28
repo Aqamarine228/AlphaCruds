@@ -25,6 +25,7 @@ class TableViewMakeCommand extends ViewMakeCommand
         return (new Stub($this->getViewStubName($this->getViewName()), [
             'MODEL_KEBAB' => $this->getModelKebabName(),
             'MODEL_CAMEL_NAME' => $this->getModelCamelName(),
+            'MODEL_PLURAL_NAME' => $this->getModelPluralName(),
             'LOWER_NAME' => $module->getLowerName(),
             'FIELDS' => $this->getFields(),
             'TABLE_HEADERS' => $this->generateTableHeaders(),

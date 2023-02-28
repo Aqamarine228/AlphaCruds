@@ -37,6 +37,7 @@ class ControllerMakeCommand extends GeneratorCommand
             'MODULE_NAMESPACE' => $this->laravel['modules']->config('namespace'),
             'MODEL_NAME' => $this->getModelName(),
             'MODEL_CAMEL_NAME' => $this->getModelCamelName(),
+            'MODEL_PLURAL_NAME' => $this->getModelPluralName(),
             'MODEL_NAMESPACE' => $this->getModelNamespace(),
             'BASE_CONTROLLER' => $this->getBaseControllerPath($module->getStudlyName()),
             'REQUEST' => $this->getRequestPath(),
@@ -76,23 +77,9 @@ class ControllerMakeCommand extends GeneratorCommand
         return $this->getTranslatedFields() ? '/controller-translations.stub' : '/controller.stub';
     }
 
-    protected function getArguments(): array
+    private function getModelPluralName(): string
     {
-        return [
-            ['model', InputArgument::REQUIRED, 'The name of model to be used.'],
-            ['module', InputArgument::OPTIONAL, 'The name of module will be used.'],
-        ];
-    }
-
-    protected function getOptions(): array
-    {
-        return [
-            ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the request already exists'],
-            ['model-namespace', 'mn', InputOption::VALUE_OPTIONAL, 'Namespace of model which will CRUD class use.'],
-            ['base', 'b', InputOption::VALUE_OPTIONAL, 'Namespace of class which will CRUD class extend.'],
-            ['translations', 't', InputOption::VALUE_OPTIONAL, 'Fields that will be translated to multiple languages.'],
-            ['request', 'r', InputOption::VALUE_OPTIONAL, 'Namespace of request which will CRUD use for validation.'],
-        ];
+        return Str::plural($this->getModelName());
     }
 
     private function getModelCamelName(): string
@@ -163,5 +150,24 @@ class ControllerMakeCommand extends GeneratorCommand
             . 'Base'
             . $module
             . 'Controller';
+    }
+
+    protected function getArguments(): array
+    {
+        return [
+            ['model', InputArgument::REQUIRED, 'The name of model to be used.'],
+            ['module', InputArgument::OPTIONAL, 'The name of module will be used.'],
+        ];
+    }
+
+    protected function getOptions(): array
+    {
+        return [
+            ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the request already exists'],
+            ['model-namespace', 'mn', InputOption::VALUE_OPTIONAL, 'Namespace of model which will CRUD class use.'],
+            ['base', 'b', InputOption::VALUE_OPTIONAL, 'Namespace of class which will CRUD class extend.'],
+            ['translations', 't', InputOption::VALUE_OPTIONAL, 'Fields that will be translated to multiple languages.'],
+            ['request', 'r', InputOption::VALUE_OPTIONAL, 'Namespace of request which will CRUD use for validation.'],
+        ];
     }
 }

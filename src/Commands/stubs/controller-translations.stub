@@ -12,17 +12,15 @@ class $CLASS$ extends \$BASE_CONTROLLER$
 {
     public function index(Request $request): View
     {
-        $$MODEL_CAMEL_NAME$s = $MODEL_NAME$::with(['translations' => static function ($query) {
+        $$MODEL_PLURAL_NAME$ = $MODEL_NAME$::with(['translations' => static function ($query) {
             $query->select('code');
         }])->paginate();
-        return $this->view('$MODEL_CAMEL_NAME$.index', ['$MODEL_CAMEL_NAME$s' => $$MODEL_CAMEL_NAME$s]);
+        return $this->view('$MODEL_CAMEL_NAME$.index', ['$MODEL_PLURAL_NAME$' => $$MODEL_PLURAL_NAME$]);
     }
 
     public function show(Request $request, $MODEL_NAME$ $$MODEL_CAMEL_NAME$): View
     {
-        $languageCode = $request->exists('language_code')
-                        ? $request->input('language_code')
-                        : $request->user()?->language_code;
+        $languageCode = $request->get('language_code', config('alphacruds.default_language'));
 
         $$MODEL_CAMEL_NAME$->load(['translations' => static function ($query) use ($languageCode) {
             $query->where('code', $languageCode);
@@ -35,18 +33,18 @@ class $CLASS$ extends \$BASE_CONTROLLER$
         }
 
         $languages = $$MODEL_CAMEL_NAME$->translations()->get();
+        $language = Language::find($languageCode);
 
         return $this->view('$MODEL_CAMEL_NAME$.show', [
             '$MODEL_CAMEL_NAME$' => $$MODEL_CAMEL_NAME$,
             'languages' => $languages,
+            'language' => $language,
         ]);
     }
 
     public function edit(Request $request, int $$MODEL_CAMEL_NAME$Id): View
     {
-        $languageCode = $request->exists('language_code')
-                ? $request->input('language_code')
-                : $request->user()?->language_code;
+        $languageCode = $request->get('language_code', config('alphacruds.default_language'));
 
         $$MODEL_CAMEL_NAME$ = $MODEL_NAME$::find($$MODEL_CAMEL_NAME$Id);
 
@@ -59,9 +57,11 @@ class $CLASS$ extends \$BASE_CONTROLLER$
         }
 
         $languages = Language::all();
+        $language = Language::find($languageCode);
         return $this->view('$MODEL_CAMEL_NAME$.edit', [
             '$MODEL_CAMEL_NAME$' => $$MODEL_CAMEL_NAME$,
             'languages' => $languages,
+            'language' => $language,
         ]);
     }
 

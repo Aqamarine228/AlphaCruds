@@ -2,7 +2,7 @@
 
 @section('title')
     <div class="d-flex">
-        $ENTITY_NAME$s
+        $ENTITY_PLURAL_NAME$
 
         <form action="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.store') }}" class="ml-1" method="POST">
             @csrf
@@ -15,7 +15,7 @@
 @stop
 
 @section('breadcrumb')
-    <li class="breadcrumb-item active">$ENTITY_NAME$s</li>
+    <li class="breadcrumb-item active">$ENTITY_PLURAL_NAME$</li>
 @stop
 
 @section('content')

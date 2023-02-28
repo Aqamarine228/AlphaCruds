@@ -5,7 +5,7 @@
 @stop
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.index') }}">$ENTITY_NAME$s</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.index') }}">$ENTITY_PLURAL_NAME$</a></li>
     <li class="breadcrumb-item active">New $ENTITY_NAME$</li>
 @stop
 
