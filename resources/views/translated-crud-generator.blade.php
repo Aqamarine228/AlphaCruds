@@ -55,6 +55,7 @@
                                     name="fields[]"
                                     style="max-width: 200px"
                                     value="{{$field}}"
+                                    class="form-control"
                                 >
                                 <select
                                     type="text"

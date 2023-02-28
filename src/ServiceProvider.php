@@ -13,6 +13,7 @@ use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\CreateViewMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\EditViewMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\FormViewMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\IndexViewMakeCommand;
+use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\LanguagesFormViewMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\ShowViewMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\TableViewMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\ViewsMakeCommand;
@@ -93,6 +94,7 @@ class ServiceProvider extends ParentProvider
                 ApiControllerMakeCommand::class,
                 ResourceMakeCommand::class,
                 ApiRoutesMakeCommand::class,
+                LanguagesFormViewMakeCommand::class,
             ]);
         }
 
@@ -111,6 +113,7 @@ class ServiceProvider extends ParentProvider
             ApiControllerMakeCommand::class,
             ResourceMakeCommand::class,
             ApiRoutesMakeCommand::class,
+            LanguagesFormViewMakeCommand::class,
         ]);
     }
 }
