@@ -11,7 +11,8 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <form action="{{route('alphacruds.translated-curd-generator.create')}}" method="post" id="crudForm">
+            @include('alphacruds::components._get-table-fields', ['route'=>route('alphacruds.translated-crud-generator')])
+            <form action="{{route('alphacruds.translated-crud-generator.create')}}" method="post" id="crudForm">
                 @csrf
 
                 @include('alphacruds::components.input_group', [
@@ -28,6 +29,7 @@
                    'label' => 'Model',
                    'name' => 'model',
                    'placeholder' => 'Model',
+                   'defaultValue' => isset($model) ? $model : '',
                 ])
 
                 <div class="form-check">
@@ -42,7 +44,42 @@
                     Add Field
                 </button>
 
-                <div id="fields"></div>
+                <div id="fields">
+                    @isset($fields)
+                        @foreach($fields as $field)
+                            <label class="d-flex">
+                                <input
+                                    type="text"
+                                    required
+                                    placeholder="Field Name"
+                                    name="fields[]"
+                                    style="max-width: 200px"
+                                    value="{{$field}}"
+                                >
+                                <select
+                                    type="text"
+                                    required
+                                    name="types[]"
+                                    class="ml-1 form-control"
+                                    style="max-width: 200px;"
+                                >
+                                    <option value="text">
+                                        Text
+                                    </option>
+                                    <option value="number">
+                                        Number
+                                    </option>
+                                </select>
+                                <button
+                                    class="btn btn-danger btn-sm ml-1"
+                                    onclick="this.parentElement.remove()"
+                                >
+                                    <em class="fas fa-trash"></em> Delete
+                                </button>
+                            </label>
+                        @endforeach
+                    @endisset
+                </div>
 
                 <button class="btn btn-primary btn-sm mb-3" id="addTranslatedField" type="button">
                     <em class="fas fa-plus"></em>
@@ -55,6 +92,11 @@
                     <em class="fas fa-upload"></em>
                     Create
                 </button>
+
+                <a class="btn btn-danger btn-sm" href="{{route('alphacruds.translated-crud-generator')}}">
+                    <em class="fas fa-trash"></em>
+                    Clear
+                </a>
 
             </form>
         </div>

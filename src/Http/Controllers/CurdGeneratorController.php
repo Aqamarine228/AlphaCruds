@@ -7,9 +7,12 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Schema;
 
 class CurdGeneratorController extends BaseAlphaCrudsController
 {
+    use TableData;
+
     private string $model;
     private string $module;
     private bool $force;
@@ -17,9 +20,24 @@ class CurdGeneratorController extends BaseAlphaCrudsController
     private array $types;
 
     private bool $errors = false;
-    public function index(): View
+    public function index(Request $request): View
     {
-        return $this->view('crud-generator');
+        if (!$request->input('table')) {
+            return $this->view('crud-generator');
+        }
+
+        if (!Schema::hasTable($request->input('table'))) {
+            $this->showErrorMessage('Table must exists in database.');
+            return $this->view('crud-generator');
+        }
+
+        $fields = $this->getTableColumns($request->input('table'));
+        $model = Str::singular(Str::studly($request->input('table')));
+
+        return $this->view('crud-generator', [
+            'model' => $model,
+            'fields' => $fields,
+        ]);
     }
 
     public function create(Request $request): RedirectResponse
