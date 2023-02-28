@@ -16,6 +16,7 @@ use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\IndexViewMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\ShowViewMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\TableViewMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\ViewsMakeCommand;
+use AlphaDevTeam\AlphaCruds\Http\Middlewares\OnlyLocalMiddleware;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider as ParentProvider;
@@ -54,7 +55,7 @@ class ServiceProvider extends ParentProvider
     {
         Route::group([
             'namespace' => 'AlphaDevTeam\AlphaCruds\Http\Controllers',
-            'middleware' => config('alphacruds.routes.middleware'),
+            'middleware' => array_merge(config('alphacruds.routes.middleware'), [OnlyLocalMiddleware::class]),
             'prefix' => config('alphacruds.routes.path'),
             'as' => config('alphacruds.routes.route_name_prefix') . '.',
         ], function () {
