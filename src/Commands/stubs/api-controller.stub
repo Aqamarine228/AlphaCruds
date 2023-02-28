@@ -1,0 +1,20 @@
+<?php
+
+namespace $CLASS_NAMESPACE$;
+
+use $MODEL_NAMESPACE$\$MODEL_NAME$;
+use Illuminate\Http\JsonResponse;
+
+class $CLASS$ extends \$BASE_CONTROLLER$
+{
+    public function index(): JsonResponse
+    {
+        $$MODEL_PLURAL_NAME$ = $MODEL_NAME$::paginate();
+        return $this->respondSuccess(\$RESOURCE$::collection($$MODEL_PLURAL_NAME$)->resource);
+    }
+
+    public function show($MODEL_NAME$ $$MODEL_CAMEL_NAME$): JsonResponse
+    {
+        return $this->respondSuccess(new \$RESOURCE$($$MODEL_CAMEL_NAME$));
+    }
+}

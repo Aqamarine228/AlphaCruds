@@ -1,18 +1,18 @@
 @extends('alphacruds::layout.layout')
 
 @section('title')
-    Crud Generator
+    API Crud Generator
 @endsection
 
 @section('breadcrumb')
-    <li class="breadcrumb-item active">Crud Generator</li>
+    <li class="breadcrumb-item active">API Crud Generator</li>
 @endsection
 
 @section('content')
     <div class="card">
         <div class="card-body">
-            @include('alphacruds::components._get-table-fields', ['route' =>route('alphacruds.crud-generator')])
-            <form action="{{route('alphacruds.crud-generator.create')}}" method="post" id="crudForm">
+            @include('alphacruds::components._get-table-fields', ['route' =>route('alphacruds.api-crud-generator')])
+            <form action="{{route('alphacruds.api-crud-generator.create')}}" method="post" id="crudForm">
                 @csrf
 
                 @include('alphacruds::components.input_group', [
@@ -49,7 +49,7 @@
                     Create
                 </button>
 
-                <a class="btn btn-danger btn-sm" href="{{route('alphacruds.crud-generator')}}">
+                <a class="btn btn-danger btn-sm" href="{{route('alphacruds.api-crud-generator')}}">
                     <em class="fas fa-trash"></em>
                     Clear
                 </a>

@@ -1,14 +1,17 @@
 @extends('$LOWER_NAME$::$LAYOUT$')
 
 @section('title')
-    $ENTITY_PLURAL_NAME$
+    <div class="d-flex">
+        $ENTITY_PLURAL_NAME$
 
-    <a class="btn btn-sm btn-primary d-inline-block ml-2"
-       href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.create') }}">
-        <i class=" fas fa-plus-circle mr-1"></i>
-        Add New $ENTITY_NAME$
-    </a>
-
+        <form action="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.store') }}" class="ml-1" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-sm btn-primary d-inline-block ml-2">
+                <i class=" fas fa-plus-circle mr-1"></i>
+                Add New $ENTITY_NAME$
+            </button>
+        </form>
+    </div>
 @stop
 
 @section('breadcrumb')

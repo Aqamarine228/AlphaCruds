@@ -10,8 +10,8 @@ class $CLASS$ extends \$BASE_CONTROLLER$
 {
     public function index(): View
     {
-        $$MODEL_CAMEL_NAME$s = $MODEL_NAME$::paginate();
-        return $this->view('$MODEL_CAMEL_NAME$.index', ['$MODEL_CAMEL_NAME$s' => $$MODEL_CAMEL_NAME$s]);
+        $$MODEL_PLURAL_NAME$ = $MODEL_NAME$::paginate();
+        return $this->view('$MODEL_CAMEL_NAME$.index', ['$MODEL_PLURAL_NAME$' => $$MODEL_PLURAL_NAME$]);
     }
 
     public function create(): View

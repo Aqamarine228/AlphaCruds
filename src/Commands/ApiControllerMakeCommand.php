@@ -10,17 +10,17 @@ use Nwidart\Modules\Traits\ModuleCommandTrait;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-class ControllerMakeCommand extends GeneratorCommand
+class ApiControllerMakeCommand extends GeneratorCommand
 {
     use ModuleCommandTrait;
 
-    protected $name = 'alphacruds:make-controller';
+    protected $name = 'alphacruds:make-api-controller';
 
     protected $argumentName = 'model';
 
-    protected $description = 'Creates CRUD Controller in AlphaDev style';
+    protected $description = 'Creates CRUD API Controller in AlphaDev style';
 
-    protected function getTemplateContents(): string
+    protected function getTemplateContents(): bool|array|string
     {
         $module = $this->laravel['modules']->findOrFail($this->getModuleName());
 
@@ -40,22 +40,11 @@ class ControllerMakeCommand extends GeneratorCommand
             'MODEL_PLURAL_NAME' => $this->getModelPluralName(),
             'MODEL_NAMESPACE' => $this->getModelNamespace(),
             'BASE_CONTROLLER' => $this->getBaseControllerPath($module->getStudlyName()),
-            'REQUEST' => $this->getRequestPath(),
-            'TRANSLATED_FIELDS' => $this->getTranslatedFields(),
+            'RESOURCE' => $this->getResourcePath(),
         ]))->render();
     }
 
-    protected function getControllerName(): string
-    {
-        return $this->getModelName() . 'Controller';
-    }
-
-    private function getControllerNameWithoutNamespace(): string
-    {
-        return class_basename($this->getControllerName());
-    }
-
-    public function getDestinationFilePath(): string
+    protected function getDestinationFilePath(): string
     {
         $path = $this->laravel['modules']->getModulePath($this->getModuleName());
 
@@ -74,7 +63,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     protected function getStubName(): string
     {
-        return $this->getTranslatedFields() ? '/controller-translations.stub' : '/controller.stub';
+        return '/api-controller.stub';
     }
 
     private function getModelPluralName(): string
@@ -92,9 +81,14 @@ class ControllerMakeCommand extends GeneratorCommand
         return Str::studly($this->argument('model'));
     }
 
-    private function getTranslatedFields(): ?string
+    private function getControllerNameWithoutNamespace(): string
     {
-        return $this->option('translations') ? base64_decode($this->option('translations')) : null;
+        return class_basename($this->getControllerName());
+    }
+
+    protected function getControllerName(): string
+    {
+        return $this->getModelName() . 'Controller';
     }
 
     public function getModelNamespace(): string
@@ -111,25 +105,6 @@ class ControllerMakeCommand extends GeneratorCommand
             . $this->laravel['modules']->findOrFail($this->getModuleName())
             . '\\'
             . $path;
-    }
-
-    public function getRequestPath(): string
-    {
-        if ($this->option('request')) {
-            return $this->option('request');
-        }
-
-        $path = $this->laravel['modules']->config('paths.generator.request.path', 'Http/Requests');
-        $path = str_replace('/', '\\', $path);
-
-        return $this->laravel['modules']->config('namespace')
-            . '\\'
-            . $this->laravel['modules']->findOrFail($this->getModuleName())
-            . '\\'
-            . $path
-            . '\\'
-            . $this->getModelName()
-            . 'Request';
     }
 
     public function getBaseControllerPath(string $module): string
@@ -152,6 +127,26 @@ class ControllerMakeCommand extends GeneratorCommand
             . 'Controller';
     }
 
+    public function getResourcePath(): string
+    {
+        if ($this->option('resource')) {
+            return $this->option('resource');
+        }
+
+        $path = $this->laravel['modules']->config('paths.generator.resource.path', 'Http/Resources');
+        $path = str_replace('/', '\\', $path);
+
+        return $this->laravel['modules']->config('namespace')
+            . '\\'
+            . $this->laravel['modules']->findOrFail($this->getModuleName())
+            . '\\'
+            . $path
+            . '\\'
+            . $this->getModelName()
+            . 'Resource';
+    }
+
+
     protected function getArguments(): array
     {
         return [
@@ -166,8 +161,7 @@ class ControllerMakeCommand extends GeneratorCommand
             ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the request already exists'],
             ['model-namespace', 'mn', InputOption::VALUE_OPTIONAL, 'Namespace of model which will CRUD class use.'],
             ['base', 'b', InputOption::VALUE_OPTIONAL, 'Namespace of class which will CRUD class extend.'],
-            ['translations', 't', InputOption::VALUE_OPTIONAL, 'Fields that will be translated to multiple languages.'],
-            ['request', 'r', InputOption::VALUE_OPTIONAL, 'Namespace of request which will CRUD use for validation.'],
+            ['resource', 're', InputOption::VALUE_OPTIONAL, 'Namespace of resource which will be used.'],
         ];
     }
 }

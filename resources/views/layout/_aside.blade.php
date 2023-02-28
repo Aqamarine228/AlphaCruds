@@ -16,7 +16,7 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
                 <li class="nav-item">
-                    <a href="{{route('alphacruds.curd-generator')}}" class="nav-link">
+                    <a href="{{route('alphacruds.crud-generator')}}" class="nav-link">
                         <em class="nav-icon fas fa-robot"></em>
                         <p>
                             Crud Generator
@@ -24,10 +24,18 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('alphacruds.translated-curd-generator')}}" class="nav-link">
+                    <a href="{{route('alphacruds.translated-crud-generator')}}" class="nav-link">
                         <em class="nav-icon fas fa-language"></em>
                         <p>
                             Translated Crud Generator
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('alphacruds.api-crud-generator')}}" class="nav-link">
+                        <em class="nav-icon fas fa-code"></em>
+                        <p>
+                            API Crud Generator
                         </p>
                     </a>
                 </li>

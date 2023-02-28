@@ -7,9 +7,9 @@ use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-class FormViewMakeCommand extends ViewMakeCommand
+class LanguagesFormViewMakeCommand extends ViewMakeCommand
 {
-    protected $name = 'alphacruds:make-form-view';
+    protected $name = 'alphacruds:make-languages-form-view';
 
     protected array $additionalArguments = [
         ['fields', InputArgument::REQUIRED, 'Fields to be used in form.']
@@ -23,7 +23,7 @@ class FormViewMakeCommand extends ViewMakeCommand
     {
         $module = $this->laravel['modules']->findOrFail($this->getModuleName());
 
-        return (new Stub($this->getViewStubName('_form'), [
+        return (new Stub($this->getViewStubName('_languages-form'), [
             'MODEL_KEBAB' => $this->getModelKebabName(),
             'LOWER_NAME' => $module->getLowerName(),
             'FIELDS' => $this->generateFields($module->getLowerName()),
@@ -45,7 +45,7 @@ class FormViewMakeCommand extends ViewMakeCommand
                 'label' => '$label',
                 'name' => '$key',
                 'placeholder' => '$key',
-                'defaultValue' => \$model->$key
+                'defaultValue' => \$model->translations->first()?->pivot->$key
             ])";
         }
         return $result;
@@ -53,7 +53,7 @@ class FormViewMakeCommand extends ViewMakeCommand
 
     protected function getViewPath(): string
     {
-        return 'blocks/_form';
+        return 'blocks/_languages-form';
     }
 
     private function getFields(): string

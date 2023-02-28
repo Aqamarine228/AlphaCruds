@@ -1,13 +1,21 @@
 @extends('$LOWER_NAME$::$LAYOUT$')
 
 @section('title')
-    Edit $ENTITY_NAME$
+    @if($$MODEL_CAMEL_NAME$->exists)
+        Edit $ENTITY_NAME$
+    @else
+        Create New $ENTITY_NAME$
+    @endif
 @stop
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.index') }}">$ENTITY_NAME$s</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.show', $$MODEL_CAMEL_NAME$->id) }}">{{ $$MODEL_CAMEL_NAME$->id }}</a></li>
-    <li class="breadcrumb-item active">Edit</li>
+    <li class="breadcrumb-item"><a href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.index') }}">$ENTITY_PLURAL_NAME$</a></li>
+    @if($$MODEL_CAMEL_NAME$->exists)
+        <li class="breadcrumb-item"><a href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.show', $$MODEL_CAMEL_NAME$->id) }}">{{ $$MODEL_CAMEL_NAME$->id }}</a></li>
+        <li class="breadcrumb-item active">Edit</li>
+    @else
+        <li class="breadcrumb-item active">Create</li>
+    @endif
 @stop
 
 @section('content')
@@ -18,11 +26,23 @@
                 <div class="card-body">
                     @include('$LOWER_NAME$::$MODEL_KEBAB$.blocks._form', [
                         'model' => $$MODEL_CAMEL_NAME$,
-                        'languages' => $languages,
                     ])
                 </div>
             </div>
         </div>
+        @if($$MODEL_CAMEL_NAME$->exists)
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    @include('$LOWER_NAME$::$MODEL_KEBAB$.blocks._languages-form', [
+                        'model' => $$MODEL_CAMEL_NAME$,
+                        'languages' => $languages,
+                        'language' => $language,
+                    ])
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 
 @stop

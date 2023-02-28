@@ -6,7 +6,7 @@
     </tr>
     </thead>
     <tbody>
-    @foreach($$MODEL_CAMEL_NAME$s as $$MODEL_CAMEL_NAME$)
+    @foreach($$MODEL_PLURAL_NAME$ as $$MODEL_CAMEL_NAME$)
         <tr>
             <td>
                 <a href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.show', $$MODEL_CAMEL_NAME$->id) }}">{{ $$MODEL_CAMEL_NAME$->id }}</a>
@@ -16,4 +16,4 @@
     @endforeach
     </tbody>
 </table>
-{{ $$MODEL_CAMEL_NAME$s->links() }}
+{{ $$MODEL_PLURAL_NAME$->links() }}

@@ -2,13 +2,12 @@
 
 namespace AlphaDevTeam\AlphaCruds\Http\Controllers;
 
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 
-class TranslatedCrudGeneratorController extends BaseAlphaCrudsController
+class TranslatedCrudCrudGeneratorController extends BaseCrudGeneratorController
 {
     private string $model;
     private string $module;
@@ -20,9 +19,9 @@ class TranslatedCrudGeneratorController extends BaseAlphaCrudsController
 
     private bool $errors = false;
 
-    public function index(): View
+    protected function getIndexView(): string
     {
-        return $this->view('translated-crud-generator');
+        return 'translated-crud-generator';
     }
 
     public function create(Request $request): RedirectResponse
@@ -149,17 +148,7 @@ class TranslatedCrudGeneratorController extends BaseAlphaCrudsController
 
     private function generateCreateFields(): string
     {
-        $result = '[';
-        $fields = array_merge($this->fields, $this->translatedFields, ['language_code']);
-        $types = array_merge($this->types, $this->translatedTypes, ['exists:languages,code']);
-        for ($i = 0; $i < sizeof($fields); $i++) {
-            $result.= '"'.Str::snake($fields[$i])
-                .'"=>["'
-                .$this->toValidationType($types[$i])
-                .'","required"],';
-        }
-
-        return base64_encode($result.']');
+        return base64_encode('[]');
     }
 
     private function generateUpdateFields(): string
@@ -171,7 +160,8 @@ class TranslatedCrudGeneratorController extends BaseAlphaCrudsController
             $result.= '"'.Str::snake($fields[$i])
                 .'"=>["'
                 .$this->toValidationType($types[$i])
-                .'"],';
+                .'"],
+                ';
         }
 
         return base64_encode($result.']');

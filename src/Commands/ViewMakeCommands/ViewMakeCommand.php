@@ -48,6 +48,16 @@ abstract class ViewMakeCommand extends GeneratorCommand
         return Str::kebab($this->getModelName());
     }
 
+    protected function getModelPluralName(): string
+    {
+        return Str::plural($this->getModelName());
+    }
+
+    protected function getEntityPluralName(): string
+    {
+        return Str::plural($this->getEntityName());
+    }
+
     protected function getEntityName(): string
     {
         return Str::title($this->getModelName());

@@ -19,7 +19,7 @@ class ViewsMakeCommand extends Command
     public function handle()
     {
         $module = $this->laravel['modules']->findOrFail($this->getModuleName());
-        if ($result = $this->createCreateView($module)) {
+        if (!$this->option('translations') && $result = $this->createCreateView($module)) {
             return $result;
         }
         if ($result = $this->createIndexView($module)) {
@@ -32,6 +32,9 @@ class ViewsMakeCommand extends Command
             return $result;
         }
         if ($result = $this->createFormView($module)) {
+            return $result;
+        }
+        if ($this->option('translations') && $result = $this->createLanguagesFormView($module)) {
             return $result;
         }
         if ($result = $this->createTableView($module)) {
@@ -57,10 +60,14 @@ class ViewsMakeCommand extends Command
     {
         return $this->call(
             'alphacruds:make-index-view',
-            array_merge([
-                'model' => $this->getModelName(),
-                'module' => $module,
-            ], $this->option('force') ? ['-f' => true] : [])
+            array_merge(
+                [
+                    'model' => $this->getModelName(),
+                    'module' => $module,
+                ],
+                $this->option('force') ? ['-f' => true] : [],
+                $this->option('translations') ? ['-t' => true] : [],
+            )
         );
     }
 
@@ -105,7 +112,21 @@ class ViewsMakeCommand extends Command
                     'module' => $module,
                 ],
                 $this->option('force') ? ['-f' => true] : [],
-                $this->option('translations') ? ['-t' => $this->option('translations')] : [],
+            )
+        );
+    }
+
+    private function createLanguagesFormView(string $module): int
+    {
+        return $this->call(
+            'alphacruds:make-languages-form-view',
+            array_merge(
+                [
+                    'model' => $this->getModelName(),
+                    'fields' => $this->option('translations'),
+                    'module' => $module,
+                ],
+                $this->option('force') ? ['-f' => true] : [],
             )
         );
     }
