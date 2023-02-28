@@ -1,0 +1,6 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+Route::get('/$MODEL_KEBAB$/index', [\$CONTROLLER_PATH$::class, 'index']);
+Route::get('/$MODEL_KEBAB$/{$MODEL_CAMEL$}', [\$CONTROLLER_PATH$::class, 'show']);

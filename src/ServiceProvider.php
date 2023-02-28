@@ -2,9 +2,12 @@
 
 namespace AlphaDevTeam\AlphaCruds;
 
+use AlphaDevTeam\AlphaCruds\Commands\ApiControllerMakeCommand;
+use AlphaDevTeam\AlphaCruds\Commands\ApiRoutesMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\ControllerMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\ModelMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\RequestMakeCommand;
+use AlphaDevTeam\AlphaCruds\Commands\ResourceMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\RoutesMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\CreateViewMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\EditViewMakeCommand;
@@ -86,6 +89,9 @@ class ServiceProvider extends ParentProvider
                 ViewsMakeCommand::class,
                 RoutesMakeCommand::class,
                 ModelMakeCommand::class,
+                ApiControllerMakeCommand::class,
+                ResourceMakeCommand::class,
+                ApiRoutesMakeCommand::class,
             ]);
         }
 
@@ -101,6 +107,9 @@ class ServiceProvider extends ParentProvider
             ViewsMakeCommand::class,
             RoutesMakeCommand::class,
             ModelMakeCommand::class,
+            ApiControllerMakeCommand::class,
+            ResourceMakeCommand::class,
+            ApiRoutesMakeCommand::class,
         ]);
     }
 }
