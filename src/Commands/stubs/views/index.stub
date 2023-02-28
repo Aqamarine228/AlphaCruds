@@ -1,7 +1,7 @@
 @extends('$LOWER_NAME$::$LAYOUT$')
 
 @section('title')
-    $ENTITY_NAME$s
+    $ENTITY_PLURAL_NAME$
 
     <a class="btn btn-sm btn-primary d-inline-block ml-2"
        href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.create') }}">
@@ -12,7 +12,7 @@
 @stop
 
 @section('breadcrumb')
-    <li class="breadcrumb-item active">$ENTITY_NAME$s</li>
+    <li class="breadcrumb-item active">$ENTITY_PLURAL_NAME$</li>
 @stop
 
 @section('content')

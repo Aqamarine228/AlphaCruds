@@ -9,7 +9,7 @@
 @stop
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.index') }}">$ENTITY_NAME$s</a></li>
+    <li class="breadcrumb-item"><a href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.index') }}">$ENTITY_PLURAL_NAME$</a></li>
     @if($$MODEL_CAMEL_NAME$->exists)
         <li class="breadcrumb-item"><a href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.show', $$MODEL_CAMEL_NAME$->id) }}">{{ $$MODEL_CAMEL_NAME$->id }}</a></li>
         <li class="breadcrumb-item active">Edit</li>
