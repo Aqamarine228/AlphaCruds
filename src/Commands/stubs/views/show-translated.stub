@@ -22,23 +22,18 @@
                         </tbody>
                     </table>
 
-                    <select
-                          class="form-control mb-3 mt-3"
-                          onChange="window.location.href='{{route('$LOWER_NAME$.$MODEL_KEBAB$.show', $$MODEL_CAMEL_NAME$->id) . '?language_code='}}'+this.value"
-                          style="max-width: 150px"
-                          name="language_code"
-                        >
-                            @foreach($languages as $language)
-                                <option
-                                 value="{{$language->code}}"
-                                 {{$language->code === $$MODEL_CAMEL_NAME$->translations->first()?->code ? 'selected' : ''}}
-                                >
-                                    {{$language->name}}
-                                </option>
-                            @endforeach
-                    </select>
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                        {{ $language->name }}
+                    </button>
+                    <div class="dropdown-menu">
+                    @foreach($languages as $lang)
+                        <a class="dropdown-item" href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.show', $$MODEL_CAMEL_NAME$->id). '?language_code=' . $lang->code}}">
+                            {{ $lang->name }}
+                        </a>
+                    @endforeach
+                    </div>
 
-                    <table class="table table-striped mb-3 posts-table">
+                    <table class="table table-striped mb-3 posts-table mt-3">
                         <tbody>
                             $TRANSLATED_FIELDS$
                         </tbody>

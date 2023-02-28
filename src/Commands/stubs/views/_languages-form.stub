@@ -3,25 +3,21 @@
     @csrf
     @method('PUT')
 
-    <select
-      class="form-control mb-3 mt-3"
-      onChange="window.location.href='{{route('$LOWER_NAME$.$MODEL_KEBAB$.edit', $model->id) . '?language_code='}}'+this.value"
-      style="max-width: 150px"
-      name="language_code"
-    >
-        @foreach($languages as $language)
-            <option
-             value="{{$language->code}}"
-             {{$language->code === (request()->exists('language_code')
-                                   ? request()->input('language_code')
-                                   : request()->user()?->language_code) ? 'selected' : ''}}
-            >
-                {{$language->name}}
-            </option>
-        @endforeach
-    </select>
+    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+        {{ $language->name }}
+    </button>
+    <div class="dropdown-menu">
+    @foreach($languages as $lang)
+        <a class="dropdown-item" href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.edit', $model->id). '?language_code=' . $lang->code}}">
+            {{ $lang->name }}
+        </a>
+    @endforeach
+    </div>
 
+    <div class="mt-3">
+        <input type="hidden" name="language_code" value="{{ $language->code }}">
 $FIELDS$
+    </div>
 
     <button class="btn btn-primary mt-lg-4" type="submit">
         <i class="fa fa-save"></i>

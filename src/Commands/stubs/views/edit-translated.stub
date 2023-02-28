@@ -37,6 +37,7 @@
                     @include('$LOWER_NAME$::$MODEL_KEBAB$.blocks._languages-form', [
                         'model' => $$MODEL_CAMEL_NAME$,
                         'languages' => $languages,
+                        'language' => $language,
                     ])
                 </div>
             </div>

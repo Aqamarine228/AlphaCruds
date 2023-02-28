@@ -33,10 +33,12 @@ class $CLASS$ extends \$BASE_CONTROLLER$
         }
 
         $languages = $$MODEL_CAMEL_NAME$->translations()->get();
+        $language = Language::find($languageCode);
 
         return $this->view('$MODEL_CAMEL_NAME$.show', [
             '$MODEL_CAMEL_NAME$' => $$MODEL_CAMEL_NAME$,
             'languages' => $languages,
+            'language' => $language,
         ]);
     }
 
@@ -55,9 +57,11 @@ class $CLASS$ extends \$BASE_CONTROLLER$
         }
 
         $languages = Language::all();
+        $language = Language::find($languageCode);
         return $this->view('$MODEL_CAMEL_NAME$.edit', [
             '$MODEL_CAMEL_NAME$' => $$MODEL_CAMEL_NAME$,
             'languages' => $languages,
+            'language' => $language,
         ]);
     }
 
