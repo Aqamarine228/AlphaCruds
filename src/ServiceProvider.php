@@ -6,6 +6,7 @@ use AlphaDevTeam\AlphaCruds\Commands\ApiControllerMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\ApiRoutesMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\BaseModelMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\ControllerMakeCommand;
+use AlphaDevTeam\AlphaCruds\Commands\MakeMigrationCommand;
 use AlphaDevTeam\AlphaCruds\Commands\ModelMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\RequestMakeCommand;
 use AlphaDevTeam\AlphaCruds\Commands\ResourceMakeCommand;
@@ -97,6 +98,7 @@ class ServiceProvider extends ParentProvider
                 ApiRoutesMakeCommand::class,
                 LanguagesFormViewMakeCommand::class,
                 BaseModelMakeCommand::class,
+                MakeMigrationCommand::class,
             ]);
         }
 
@@ -117,6 +119,7 @@ class ServiceProvider extends ParentProvider
             ApiRoutesMakeCommand::class,
             LanguagesFormViewMakeCommand::class,
             BaseModelMakeCommand::class,
+            MakeMigrationCommand::class,
         ]);
     }
 }
