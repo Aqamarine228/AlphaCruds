@@ -42,19 +42,13 @@ class $CLASS$ extends \$BASE_CONTROLLER$
         ]);
     }
 
-    public function edit(Request $request, int $$MODEL_CAMEL_NAME$Id): View
+    public function edit(Request $request, $MODEL_NAME$ $$MODEL_CAMEL_NAME$): View
     {
         $languageCode = $request->get('language_code', config('alphacruds.default_language'));
 
-        $$MODEL_CAMEL_NAME$ = $MODEL_NAME$::find($$MODEL_CAMEL_NAME$Id);
-
-        if ($$MODEL_CAMEL_NAME$) {
-            $$MODEL_CAMEL_NAME$->load(['translations' => static function ($query) use ($languageCode) {
-                    $query->where('code', $languageCode);
-            }]);
-        } else {
-           $$MODEL_CAMEL_NAME$ = new $MODEL_NAME$;
-        }
+        $$MODEL_CAMEL_NAME$->load(['translations' => static function ($query) use ($languageCode) {
+            $query->where('code', $languageCode);
+        }]);
 
         $languages = Language::all();
         $language = Language::find($languageCode);

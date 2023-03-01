@@ -50,7 +50,7 @@ abstract class ViewMakeCommand extends GeneratorCommand
 
     protected function getModelPluralName(): string
     {
-        return Str::plural($this->getModelName());
+        return Str::camel(Str::plural($this->getModelName()));
     }
 
     protected function getEntityPluralName(): string
