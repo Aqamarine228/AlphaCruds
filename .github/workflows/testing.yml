@@ -11,7 +11,7 @@ jobs:
       matrix:
         php: [ 8.0, 8.1, 8.2 ]
         laravel: [ 8.*, 9.*, 10.* ]
-        dependency-version: [ prefer-lowest, prefer-stable ]
+        stability: [ prefer-lowest, prefer-stable ]
         exclude:
           - php: 8.2
             laravel: '^9.0'
@@ -37,7 +37,8 @@ jobs:
           coverage: none
 
       - name: Install dependencies
-        run: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress --with laravel/framework:${{ matrix.laravel }}
+        run: |
+          composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress --with laravel/framework:${{ matrix.laravel }}
 
       - name: Execute tests
         run: vendor/bin/phpunit --verbose
