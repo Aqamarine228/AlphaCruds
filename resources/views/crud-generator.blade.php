@@ -39,6 +39,13 @@
                     </label>
                 </div>
 
+                <div class="form-check">
+                    <label class="form-check-label d-flex align-items-center">
+                        Without Base Model
+                        <input class="form-check-input" type="checkbox" name="without_base">
+                    </label>
+                </div>
+
                 <button class="btn btn-primary btn-sm mt-3 mb-3" id="addField" type="button">
                     <em class="fas fa-plus"></em>
                     Add Field

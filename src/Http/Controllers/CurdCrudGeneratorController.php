@@ -12,6 +12,7 @@ class CurdCrudGeneratorController extends BaseCrudGeneratorController
     private string $model;
     private string $module;
     private bool $force;
+    private bool $withoutBase;
     private array $fields;
     private array $types;
 
@@ -28,6 +29,7 @@ class CurdCrudGeneratorController extends BaseCrudGeneratorController
             'module' => 'string|required',
             'model' => 'string|required',
             'force' => 'nullable',
+            'without_base' => 'nullable',
             'fields' => 'array|nullable',
             'types' => 'array|nullable'
         ]);
@@ -35,6 +37,7 @@ class CurdCrudGeneratorController extends BaseCrudGeneratorController
         $this->model = $validated['model'];
         $this->module = $validated['module'];
         $this->force = isset($validated['force']);
+        $this->withoutBase = isset($validated['without_base']);
         $this->fields = $validated['fields'] ?? [];
         $this->types = $validated['types'] ?? [];
 
@@ -54,11 +57,15 @@ class CurdCrudGeneratorController extends BaseCrudGeneratorController
     {
         $this->handleCommandOutput(Artisan::call(
             'alphacruds:make-model',
-            array_merge([
-                'model' => $this->model,
-                'fillable' => $this->generateFillableFields(),
-                'module' => $this->module,
-            ], $this->force ? ['-f' => true] : [])
+            array_merge(
+                [
+                    'model' => $this->model,
+                    'fillable' => $this->generateFillableFields(),
+                    'module' => $this->module,
+                ],
+                $this->force ? ['-f' => true] : [],
+                $this->withoutBase ? ['-wb' => true] : [],
+            )
         ));
     }
 
@@ -173,5 +180,4 @@ class CurdCrudGeneratorController extends BaseCrudGeneratorController
 
         return base64_encode($result.']');
     }
-
 }
