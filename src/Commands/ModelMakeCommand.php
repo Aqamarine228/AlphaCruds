@@ -24,6 +24,10 @@ class ModelMakeCommand extends GeneratorCommand
     {
         $module = $this->laravel['modules']->findOrFail($this->getModuleName());
 
+        if (!$this->option('without-base') && !class_exists($this->getParentModelNamespace())) {
+            $this->createDefaultModel();
+        }
+
         return (new Stub($this->getStubName(), [
             'MODEL_NAME' => $this->getModelName(),
             'NAMESPACE' => $this->getClassNamespace($module) . '\\Models',
@@ -40,6 +44,13 @@ class ModelMakeCommand extends GeneratorCommand
         $path = $this->laravel['modules']->getModulePath($this->getModuleName());
         $modelPath = GenerateConfigReader::read('model');
         return $path . $modelPath->getPath() . '/' . $this->getModelName() . '.php';
+    }
+
+    private function createDefaultModel()
+    {
+        $this->call('alphacruds:make-base-model', [
+            'name' => $this->getModelName(),
+        ]);
     }
 
     private function getStubName(): string
@@ -88,6 +99,7 @@ class ModelMakeCommand extends GeneratorCommand
             ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the request already exists.'],
             ['parent', 'p', InputOption::VALUE_OPTIONAL, 'Change default parent model namespace.'],
             ['translations', 't', InputOption::VALUE_OPTIONAL, 'Fields that will be translated to multiple languages.'],
+            ['without-base', 'wb', InputOption::VALUE_NONE, 'Will not create base model if not already created.']
         ];
     }
 }

@@ -2,13 +2,10 @@
 
 namespace $NAMESPACE$;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class $CLASS$ extends \$PARENT_MODEL_NAMESPACE$\$MODEL_NAME$
 {
-    use HasFactory;
-
     protected $fillable = $FILLABLE$;
 
     public function translations(): BelongsToMany
