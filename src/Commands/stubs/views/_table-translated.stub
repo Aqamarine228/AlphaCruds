@@ -1,20 +1,33 @@
-<table class="table table-striped mb-4 posts-table">
+<table class="table table-bordered table-striped mb-4">
     <thead>
     <tr>
-        <th>ID</th>
         $TABLE_HEADERS$
         <th>Translated To</th>
+        <th width="15%"></th>
     </tr>
     </thead>
     <tbody>
     @foreach($$MODEL_PLURAL_NAME$ as $$MODEL_CAMEL_NAME$)
         <tr>
-            <td>
-                <a href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.show', $$MODEL_CAMEL_NAME$->id) }}">{{ $$MODEL_CAMEL_NAME$->id }}</a>
-            </td>
             $TABLE_BODY$
             <td>
                 {{ implode(', ', $$MODEL_CAMEL_NAME$->translations->pluck('code')->toArray()) }}
+            </td>
+            <td>
+                <a
+                    class="btn btn-primary btn-sm"
+                    href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.show', $$MODEL_CAMEL_NAME$->id) }}"
+                >
+                    <em class="fas fa-eye"></em>
+                     Show
+                </a>
+                <a
+                    class="btn btn-primary btn-sm"
+                    href="{{ route('$LOWER_NAME$.$MODEL_KEBAB$.edit', $$MODEL_CAMEL_NAME$->id) }}"
+                >
+                    <em class="fas fa-pen"></em>
+                     Edit
+                </a>
             </td>
         </tr>
     @endforeach

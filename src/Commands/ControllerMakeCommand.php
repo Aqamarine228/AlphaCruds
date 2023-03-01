@@ -79,7 +79,7 @@ class ControllerMakeCommand extends GeneratorCommand
 
     private function getModelPluralName(): string
     {
-        return Str::plural($this->getModelName());
+        return Str::camel(Str::plural($this->getModelName()));
     }
 
     private function getModelCamelName(): string
