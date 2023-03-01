@@ -15,29 +15,29 @@ jobs:
         exclude:
           - php: 8.2
             laravel: '^9.0'
+          - php: 8.2
+            laravel: '^8.0'
           - php: 8.0
             laravel: '^10.0'
     steps:
       - name: Checkout code
-        uses: actions/checkout@v1
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
+        uses: actions/checkout@v2
 
       - name: Cache dependencies
         uses: actions/cache@v1
         with:
           path: ~/.composer/cache/files
-          key: dependencies-${{ matrix.dependency-version }}-laravel-${{ matrix.laravel }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+          key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, gd
+          coverage: none
 
       - name: Install dependencies
-        run: |
-          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-          composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
+        run: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress --with laravel/framework:${{ matrix.laravel }}
 
       - name: Execute tests
-        run: vendor/bin/phpunit
-
-
+        run: vendor/bin/phpunit --verbose
