@@ -43,7 +43,7 @@ class TableViewMakeCommand extends ViewMakeCommand
         $result = "";
         eval('$fields=' . $this->getFields() . ';');
         foreach ($fields as $field) {
-            $title = Str::title($field);
+            $title = Str::title(str_replace('_', ' ', $field));
             $result .= "
         <th>$title</th>";
         }

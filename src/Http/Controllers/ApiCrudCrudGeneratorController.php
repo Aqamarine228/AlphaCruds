@@ -32,6 +32,7 @@ class ApiCrudCrudGeneratorController extends BaseCrudGeneratorController
             'model' => 'string|required',
             'force' => 'nullable',
             'without_base' => 'nullable',
+            'with_migration' => 'nullable',
             'fields' => 'array|nullable',
             'types' => 'array|nullable'
         ]);
@@ -48,6 +49,12 @@ class ApiCrudCrudGeneratorController extends BaseCrudGeneratorController
         $this->createRequest();
         $this->createRoutes();
         $this->createResource();
+
+        $withMigration = isset($validated['with_migration']);
+
+        if ($withMigration) {
+            $this->createMigration();
+        }
 
         !$this->errors && $this->showSuccessMessage('CRUD created successfully.');
 
@@ -118,6 +125,17 @@ class ApiCrudCrudGeneratorController extends BaseCrudGeneratorController
         ));
     }
 
+    private function createMigration(): void
+    {
+        $this->handleCommandOutput(Artisan::call(
+            'alphacruds:make-migration',
+            [
+                'model' => $this->model,
+                'fields' => $this->generateMigrationFields(),
+            ]
+        ));
+    }
+
     private function handleCommandOutput(int $result): void
     {
         if ($result == 1) {
@@ -178,5 +196,23 @@ class ApiCrudCrudGeneratorController extends BaseCrudGeneratorController
         }
 
         return base64_encode('["'.implode('","', $result).'"]');
+    }
+
+    private function generateMigrationFields(): string
+    {
+        $result = '';
+        for ($i = 0; $i < sizeof($this->fields); $i++) {
+            $result.= Str::snake($this->fields[$i]) .':'.$this->toSchemaType($this->types[$i]).',';
+        }
+
+        return rtrim($result, ',');
+    }
+
+    private function toSchemaType(string $type): string
+    {
+        return match ($type) {
+            'text' => 'string',
+            'number' => 'bigInteger',
+        };
     }
 }

@@ -32,6 +32,8 @@ class TranslatedCrudCrudGeneratorController extends BaseCrudGeneratorController
             'model' => 'string|required',
             'force' => 'nullable',
             'without_base' => 'nullable',
+            'with_migration' => 'nullable',
+            'with_intermediate_migration' => 'nullable',
             'fields' => 'array|nullable',
             'types' => 'array|nullable',
             'translated_fields' => 'array|nullable',
@@ -52,6 +54,17 @@ class TranslatedCrudCrudGeneratorController extends BaseCrudGeneratorController
         $this->createRequest();
         $this->createViews();
         $this->createRoutes();
+
+        $withMigration = isset($validated['with_migration']);
+        $withIntermediateMigration = isset($validated['with_intermediate_migration']);
+
+        if ($withMigration) {
+            $this->createMigration();
+        }
+
+        if ($withIntermediateMigration) {
+            $this->createIntermediateMigration();
+        }
 
         !$this->errors && $this->showSuccessMessage('CRUD created successfully.');
 
@@ -122,6 +135,28 @@ class TranslatedCrudCrudGeneratorController extends BaseCrudGeneratorController
                 'module' => $this->module,
                 '-t' => true,
             ], $this->force ? ['-f' => true] : [])
+        ));
+    }
+
+    private function createMigration(): void
+    {
+        $this->handleCommandOutput(Artisan::call(
+            'alphacruds:make-migration',
+            [
+                'model' => $this->model,
+                'fields' => $this->generateMigrationFields(),
+            ]
+        ));
+    }
+    private function createIntermediateMigration(): void
+    {
+        $this->handleCommandOutput(Artisan::call(
+            'alphacruds:make-migration',
+            [
+                'model' => $this->model,
+                'fields' => $this->generateIntermediateMigrationFields(),
+                '-l' => true,
+            ]
         ));
     }
 
@@ -207,5 +242,34 @@ class TranslatedCrudCrudGeneratorController extends BaseCrudGeneratorController
         }
 
         return base64_encode($result.']');
+    }
+
+    private function generateMigrationFields(): string
+    {
+        $result = '';
+        for ($i = 0; $i < sizeof($this->fields); $i++) {
+            $result.= Str::snake($this->fields[$i]) .':'.$this->toSchemaType($this->types[$i]).':nullable,';
+        }
+
+        return rtrim($result, ',');
+    }
+    private function generateIntermediateMigrationFields(): string
+    {
+        $result = '';
+        for ($i = 0; $i < sizeof($this->translatedFields); $i++) {
+            $result.= Str::snake($this->translatedFields[$i])
+                .':'.$this->toSchemaType($this->translatedTypes[$i])
+                .':nullable,';
+        }
+
+        return rtrim($result, ',');
+    }
+
+    private function toSchemaType(string $type): string
+    {
+        return match ($type) {
+            'text' => 'string',
+            'number' => 'bigInteger',
+        };
     }
 }

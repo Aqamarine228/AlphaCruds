@@ -36,7 +36,7 @@ class LanguagesFormViewMakeCommand extends ViewMakeCommand
         $componentPath = $this->getComponentsPath();
         eval('$fields=' . $this->getFields() . ';');
         foreach ($fields as $key => $value) {
-            $label = Str::title($key);
+            $label = Str::title(str_replace('_', ' ', $key));
             $result .= "
 
             @include('$lowerName::$componentPath.input_group', [

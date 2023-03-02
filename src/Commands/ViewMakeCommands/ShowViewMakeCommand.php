@@ -52,7 +52,7 @@ class ShowViewMakeCommand extends ViewMakeCommand
         $modelKebab = $this->getModelKebabName();
         eval('$fields=' . $this->getFields() . ';');
         foreach ($fields as $field) {
-            $title = Str::title($field);
+            $title = Str::title(str_replace('_', ' ', $field));
             $result .= "
                         <tr>
                             <td>
@@ -71,7 +71,7 @@ class ShowViewMakeCommand extends ViewMakeCommand
         $modelKebab = $this->getModelKebabName();
         eval('$fields=' . $this->getTranslatedFields() . ';');
         foreach ($fields as $field) {
-            $title = Str::title($field);
+            $title = Str::title(str_replace('_', ' ', $field));
             $result .= "
                         <tr>
                             <td>

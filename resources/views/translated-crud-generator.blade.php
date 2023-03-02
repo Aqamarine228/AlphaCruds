@@ -41,6 +41,20 @@
 
                 <div class="form-check">
                     <label class="form-check-label d-flex align-items-center">
+                        With Migration
+                        <input class="form-check-input" type="checkbox" name="with_migration">
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <label class="form-check-label d-flex align-items-center">
+                        With Intermediate Table Migration
+                        <input class="form-check-input" type="checkbox" name="with_intermediate_migration">
+                    </label>
+                </div>
+
+                <div class="form-check">
+                    <label class="form-check-label d-flex align-items-center">
                         Without Base Model
                         <input class="form-check-input" type="checkbox" name="without_base">
                     </label>

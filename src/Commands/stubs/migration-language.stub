@@ -1,0 +1,22 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+return new class extends Migration {
+    public static function up()
+    {
+        Schema::create('$TABLE$_language', function (Blueprint $table) {
+            $table->foreignId('$TABLE$_id')->constrained();
+            $table->string('language_code');
+            $table->foreign('language_code')->references('code')->on('languages')->cascadeOnDelete();
+$FIELDS$
+        });
+    }
+
+    public static function down()
+    {
+        Schema::dropIfExists('$TABLE$_language');
+    }
+};

@@ -7,8 +7,9 @@ use Illuminate\Support\Str;
 use Nwidart\Modules\Commands\GeneratorCommand;
 use Nwidart\Modules\Support\Migrations\SchemaParser;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
-class MakeMigrationCommand extends GeneratorCommand
+class MigrationMakeCommand extends GeneratorCommand
 {
     protected $name = 'alphacruds:make-migration';
 
@@ -18,7 +19,7 @@ class MakeMigrationCommand extends GeneratorCommand
 
     protected function getTemplateContents(): bool|array|string
     {
-        return (new Stub('/migration.stub', [
+        return (new Stub($this->getStub(), [
             'class' => $this->getClass(),
             'table' => $this->getTableName(),
             'fields' => $this->getSchemaParser()->render(),
@@ -30,9 +31,16 @@ class MakeMigrationCommand extends GeneratorCommand
         return $this->laravel->databasePath().'/migrations/'.$this->getFileName().'.php';
     }
 
+    private function getStub(): string
+    {
+        return $this->option('language') ? '/migration-language.stub' : '/migration.stub';
+    }
+
     private function getTableName(): string
     {
-        return Str::snake(Str::plural($this->argument('model')));
+        return Str::snake($this->option('language')
+            ? Str::singular($this->argument('model'))
+            : Str::plural($this->argument('model')));
     }
 
     public function getSchemaParser(): SchemaParser
@@ -42,6 +50,9 @@ class MakeMigrationCommand extends GeneratorCommand
 
     private function getFileName(): string
     {
+        if ($this->option('language')) {
+            return date('Y_m_d_His_') . 'create_' . $this->getTableName() . '_language_table';
+        }
         return date('Y_m_d_His_') . 'create_' . $this->getTableName() . '_table';
     }
 
@@ -51,7 +62,14 @@ class MakeMigrationCommand extends GeneratorCommand
         return [
             ['model', InputArgument::REQUIRED, 'The migration name will be created.'],
             ['fields', InputArgument::REQUIRED, 'The specified fields table.',],
+        ];
+    }
 
+    protected function getOptions(): array
+    {
+        return [
+            ['language', 'l', InputOption::VALUE_OPTIONAL, 'Create language migration instead.'],
+            ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the request already exists'],
         ];
     }
 }
