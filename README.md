@@ -1,9 +1,9 @@
 # AlphaCruds (Laravel Package)
 
-[![Tests](https://github.com/alpha-dev-team/AlphaCruds/workflows/Test/badge.svg)](https://github.com/alpha-dev-team/AlphaCruds/actions)
-![GitHub](https://img.shields.io/github/license/alpha-dev-team/alphacruds)
-[![Latest Stable Version](http://poser.pugx.org/alpha-dev-team/alphacruds/v)](https://packagist.org/packages/alpha-dev-team/alphacruds)
-[![Latest Unstable Version](http://poser.pugx.org/alpha-dev-team/alphacruds/v/unstable)](https://github.com/alpha-dev-team/AlphaCruds)
+[![Tests](https://github.com/Aqamarine228/AlphaCruds/workflows/Test/badge.svg)](https://github.com/Aqamarine228/AlphaCruds/actions)
+![GitHub](https://img.shields.io/github/license/aqamarine228/alphacruds)
+[![Latest Stable Version](http://poser.pugx.org/aqamarine/alphacruds/v)](https://packagist.org/packages/aqamarine/alphacruds)
+[![Latest Unstable Version](http://poser.pugx.org/aqamarine/alphacruds/v/unstable)](https://github.com/aqamarine/AlphaCruds)
 
 [//]: # ([![PHP Version Require]&#40;http://poser.pugx.org/alpha-dev-team/alphacruds/require/php&#41;]&#40;https://packagist.org/packages/alpha-dev-team/alphacruds&#41;)
 
@@ -16,7 +16,7 @@ Package used to automate Admin panel CRUDS creation process in AlphaDev style
 Using the package manager [composer](https://getcomposer.org).
 
 ```bash
-composer require alpha-dev-team/alphacruds
+composer require aqamarine/alphacruds
 ```
 ## Package Configuration
 
