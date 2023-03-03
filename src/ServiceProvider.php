@@ -1,25 +1,25 @@
 <?php
 
-namespace AlphaDevTeam\AlphaCruds;
+namespace Aqamarine\AlphaCruds;
 
-use AlphaDevTeam\AlphaCruds\Commands\ApiControllerMakeCommand;
-use AlphaDevTeam\AlphaCruds\Commands\ApiRoutesMakeCommand;
-use AlphaDevTeam\AlphaCruds\Commands\BaseModelMakeCommand;
-use AlphaDevTeam\AlphaCruds\Commands\ControllerMakeCommand;
-use AlphaDevTeam\AlphaCruds\Commands\MigrationMakeCommand;
-use AlphaDevTeam\AlphaCruds\Commands\ModelMakeCommand;
-use AlphaDevTeam\AlphaCruds\Commands\RequestMakeCommand;
-use AlphaDevTeam\AlphaCruds\Commands\ResourceMakeCommand;
-use AlphaDevTeam\AlphaCruds\Commands\RoutesMakeCommand;
-use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\CreateViewMakeCommand;
-use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\EditViewMakeCommand;
-use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\FormViewMakeCommand;
-use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\IndexViewMakeCommand;
-use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\LanguagesFormViewMakeCommand;
-use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\ShowViewMakeCommand;
-use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\TableViewMakeCommand;
-use AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands\ViewsMakeCommand;
-use AlphaDevTeam\AlphaCruds\Http\Middlewares\OnlyLocalMiddleware;
+use Aqamarine\AlphaCruds\Commands\ApiControllerMakeCommand;
+use Aqamarine\AlphaCruds\Commands\ApiRoutesMakeCommand;
+use Aqamarine\AlphaCruds\Commands\BaseModelMakeCommand;
+use Aqamarine\AlphaCruds\Commands\ControllerMakeCommand;
+use Aqamarine\AlphaCruds\Commands\MigrationMakeCommand;
+use Aqamarine\AlphaCruds\Commands\ModelMakeCommand;
+use Aqamarine\AlphaCruds\Commands\RequestMakeCommand;
+use Aqamarine\AlphaCruds\Commands\ResourceMakeCommand;
+use Aqamarine\AlphaCruds\Commands\RoutesMakeCommand;
+use Aqamarine\AlphaCruds\Commands\ViewMakeCommands\CreateViewMakeCommand;
+use Aqamarine\AlphaCruds\Commands\ViewMakeCommands\EditViewMakeCommand;
+use Aqamarine\AlphaCruds\Commands\ViewMakeCommands\FormViewMakeCommand;
+use Aqamarine\AlphaCruds\Commands\ViewMakeCommands\IndexViewMakeCommand;
+use Aqamarine\AlphaCruds\Commands\ViewMakeCommands\LanguagesFormViewMakeCommand;
+use Aqamarine\AlphaCruds\Commands\ViewMakeCommands\ShowViewMakeCommand;
+use Aqamarine\AlphaCruds\Commands\ViewMakeCommands\TableViewMakeCommand;
+use Aqamarine\AlphaCruds\Commands\ViewMakeCommands\ViewsMakeCommand;
+use Aqamarine\AlphaCruds\Http\Middlewares\OnlyLocalMiddleware;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider as ParentProvider;
@@ -57,7 +57,7 @@ class ServiceProvider extends ParentProvider
     protected function registerRoutes(): void
     {
         Route::group([
-            'namespace' => 'AlphaDevTeam\AlphaCruds\Http\Controllers',
+            'namespace' => 'Aqamarine\AlphaCruds\Http\Controllers',
             'middleware' => array_merge(config('alphacruds.routes.middleware'), [OnlyLocalMiddleware::class]),
             'prefix' => config('alphacruds.routes.path'),
             'as' => config('alphacruds.routes.route_name_prefix') . '.',

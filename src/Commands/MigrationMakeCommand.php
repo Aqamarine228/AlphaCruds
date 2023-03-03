@@ -1,8 +1,8 @@
 <?php
 
-namespace AlphaDevTeam\AlphaCruds\Commands;
+namespace Aqamarine\AlphaCruds\Commands;
 
-use AlphaDevTeam\AlphaCruds\Support\Stub;
+use Aqamarine\AlphaCruds\Support\Stub;
 use Illuminate\Support\Str;
 use Nwidart\Modules\Commands\GeneratorCommand;
 use Nwidart\Modules\Support\Migrations\SchemaParser;

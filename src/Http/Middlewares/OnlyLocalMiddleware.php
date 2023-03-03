@@ -1,6 +1,6 @@
 <?php
 
-namespace AlphaDevTeam\AlphaCruds\Http\Middlewares;
+namespace Aqamarine\AlphaCruds\Http\Middlewares;
 
 use Closure;
 use Illuminate\Http\JsonResponse;

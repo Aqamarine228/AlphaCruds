@@ -1,5 +1,5 @@
 @php
-    use AlphaDevTeam\AlphaCruds\Components\SessionAlerts;
+    use Aqamarine\AlphaCruds\Components\SessionAlerts;
     $alert = new SessionAlerts();
 @endphp
 

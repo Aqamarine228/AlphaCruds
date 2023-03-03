@@ -1,6 +1,6 @@
 <?php
 
-namespace AlphaDevTeam\AlphaCruds\Http\Controllers;
+namespace Aqamarine\AlphaCruds\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;

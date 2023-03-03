@@ -1,6 +1,6 @@
 <?php
 
-namespace AlphaDevTeam\AlphaCruds\Support;
+namespace Aqamarine\AlphaCruds\Support;
 
 class Stub
 {

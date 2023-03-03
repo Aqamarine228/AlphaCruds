@@ -1,8 +1,8 @@
 <?php
 
-namespace AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands;
+namespace Aqamarine\AlphaCruds\Commands\ViewMakeCommands;
 
-use AlphaDevTeam\AlphaCruds\Support\Stub;
+use Aqamarine\AlphaCruds\Support\Stub;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;

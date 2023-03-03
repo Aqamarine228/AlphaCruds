@@ -1,8 +1,8 @@
 <?php
 
-namespace AlphaDevTeam\AlphaCruds\Tests;
+namespace Aqamarine\AlphaCruds\Tests;
 
-use AlphaDevTeam\AlphaCruds\ServiceProvider;
+use Aqamarine\AlphaCruds\ServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Orchestra\Testbench\TestCase;
 

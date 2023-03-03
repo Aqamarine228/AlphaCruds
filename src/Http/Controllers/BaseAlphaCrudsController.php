@@ -1,8 +1,8 @@
 <?php
 
-namespace AlphaDevTeam\AlphaCruds\Http\Controllers;
+namespace Aqamarine\AlphaCruds\Http\Controllers;
 
-use AlphaDevTeam\AlphaCruds\Components\SessionAlerts;
+use Aqamarine\AlphaCruds\Components\SessionAlerts;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller;

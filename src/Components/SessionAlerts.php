@@ -1,6 +1,6 @@
 <?php
 
-namespace AlphaDevTeam\AlphaCruds\Components;
+namespace Aqamarine\AlphaCruds\Components;
 
 use Illuminate\Support\Facades\Session;
 

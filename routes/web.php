@@ -1,8 +1,8 @@
 <?php
 
-use AlphaDevTeam\AlphaCruds\Http\Controllers\ApiCrudCrudGeneratorController;
-use AlphaDevTeam\AlphaCruds\Http\Controllers\CurdCrudGeneratorController;
-use AlphaDevTeam\AlphaCruds\Http\Controllers\TranslatedCrudCrudGeneratorController;
+use Aqamarine\AlphaCruds\Http\Controllers\ApiCrudCrudGeneratorController;
+use Aqamarine\AlphaCruds\Http\Controllers\CurdCrudGeneratorController;
+use Aqamarine\AlphaCruds\Http\Controllers\TranslatedCrudCrudGeneratorController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/crud-generator', [CurdCrudGeneratorController::class, 'index'])->name('crud-generator');

@@ -1,6 +1,6 @@
 <?php
 
-namespace AlphaDevTeam\AlphaCruds\Tests;
+namespace Aqamarine\AlphaCruds\Tests;
 
 class RoutesTest extends AlphaCrudsTestCase
 {

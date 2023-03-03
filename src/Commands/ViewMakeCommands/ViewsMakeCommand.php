@@ -1,6 +1,6 @@
 <?php
 
-namespace AlphaDevTeam\AlphaCruds\Commands\ViewMakeCommands;
+namespace Aqamarine\AlphaCruds\Commands\ViewMakeCommands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;

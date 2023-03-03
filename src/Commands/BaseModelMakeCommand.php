@@ -1,6 +1,6 @@
 <?php
 
-namespace AlphaDevTeam\AlphaCruds\Commands;
+namespace Aqamarine\AlphaCruds\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 
