@@ -7,6 +7,7 @@ use Aqamarine\AlphaCruds\Commands\ApiRoutesMakeCommand;
 use Aqamarine\AlphaCruds\Commands\ApiTestMakeCommand;
 use Aqamarine\AlphaCruds\Commands\BaseModelMakeCommand;
 use Aqamarine\AlphaCruds\Commands\ControllerMakeCommand;
+use Aqamarine\AlphaCruds\Commands\FactoryMakeCommand;
 use Aqamarine\AlphaCruds\Commands\MigrationMakeCommand;
 use Aqamarine\AlphaCruds\Commands\ModelMakeCommand;
 use Aqamarine\AlphaCruds\Commands\RequestMakeCommand;
@@ -101,6 +102,7 @@ class ServiceProvider extends ParentProvider
                 BaseModelMakeCommand::class,
                 MigrationMakeCommand::class,
                 ApiTestMakeCommand::class,
+                FactoryMakeCommand::class,
             ]);
         }
 
@@ -123,6 +125,7 @@ class ServiceProvider extends ParentProvider
             BaseModelMakeCommand::class,
             MigrationMakeCommand::class,
             ApiTestMakeCommand::class,
+            FactoryMakeCommand::class,
         ]);
     }
 }
