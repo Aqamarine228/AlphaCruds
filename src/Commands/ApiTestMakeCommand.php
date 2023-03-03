@@ -27,9 +27,10 @@ class ApiTestMakeCommand extends GeneratorCommand
             'NAMESPACE' => $this->getClassNamespace($module),
             'BASE_TEST_CASE' => $this->getBaseTestCasePath(),
             'MODEL_NAMESPACE' => $this->getModelNamespace(),
-            'BASE_ROUTES' => $this->getBaseRoutes($module),
+            'BASE_ROUTES' => $this->getBaseRoutes(),
             'MODEL' => $this->getModelName(),
             'MODEL_CAMEL' => $this->getModelCamel(),
+            'MODEL_KEBAB' => $this->getModelKebab(),
             'RESOURCE' => $this->getResourcePath(),
             'CLASS' => $this->getClassName(),
         ]))->render();
@@ -55,9 +56,9 @@ class ApiTestMakeCommand extends GeneratorCommand
         return $this->getClass() . 'Test';
     }
 
-    private function getBaseRoutes($module): string
+    private function getBaseRoutes(): string
     {
-        return $module->getLowerName() . '.' . $this->getModelKebab();
+        return config('alphacruds.routes.api_routes_prefix');
     }
 
     private function getBaseTestCasePath(): string

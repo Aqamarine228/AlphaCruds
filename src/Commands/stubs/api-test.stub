@@ -9,8 +9,8 @@ class $CLASS$ extends \$BASE_TEST_CASE$
 {
     public function testIndex(): void
     {
-        $MODEL$::factory()->count(20)->create()
-        $this->getJson(route('api.$BASE_ROUTES$.index'))->assertStatus(200)->assertJson(fn(AssertableJson $json) => $json
+        $MODEL$::factory()->count(20)->create();
+        $this->getJson('$BASE_ROUTES$/$MODEL_KEBAB$')->assertStatus(200)->assertJson(fn(AssertableJson $json) => $json
             ->where('success', true)
             ->where('response', \$RESOURCE$::collection($MODEL$::paginate())->response($this)->getData(true)['data'])
         );
@@ -20,16 +20,15 @@ class $CLASS$ extends \$BASE_TEST_CASE$
     {
         $$MODEL_CAMEL$ = $MODEL$::factory()->create();
         $this
-            ->getJson(route('api.$BASE_ROUTES$.show', $$MODEL_CAMEL$->id))
+            ->getJson('$BASE_ROUTES$/$MODEL_KEBAB$/' . $$MODEL_CAMEL$->id)
             ->assertStatus(200)
             ->assertJson(
                 fn(AssertableJson $json) => $json
                     ->where('success', true)
                     ->where(
                         'response',
-                         new \$RESOURCE$($MODEL$::find($$MODEL_CAMEL$->id)
+                         (new \$RESOURCE$($MODEL$::find($$MODEL_CAMEL$->id)))->response()->getData(true)['data']
                     )
-                )
-            );
+                );
     }
 }

@@ -48,6 +48,7 @@ class ApiCrudCrudGeneratorController extends BaseCrudGeneratorController
         $this->createRoutes();
         $this->createResource();
         $this->createTest();
+        $this->createFactory();
 
         $withMigration = isset($validated['with_migration']);
 
@@ -146,6 +147,18 @@ class ApiCrudCrudGeneratorController extends BaseCrudGeneratorController
         ));
     }
 
+    private function createFactory(): void
+    {
+        $this->handleCommandOutput(Artisan::call(
+            'alphacruds:make-factory',
+            array_merge([
+                'model' => $this->model,
+                'fields' => $this->generateFactoryFields(),
+                'module' => $this->module,
+            ], $this->force ? ['-f' => true] : [])
+        ));
+    }
+
     private function handleCommandOutput(int $result): void
     {
         if ($result == 1) {
@@ -224,5 +237,18 @@ class ApiCrudCrudGeneratorController extends BaseCrudGeneratorController
             'text' => 'string',
             'number' => 'bigInteger',
         };
+    }
+
+    private function generateFactoryFields(): string
+    {
+        $result = '[';
+        for ($i = 0; $i < sizeof($this->fields); $i++) {
+            $result.= '"'.Str::snake($this->fields[$i])
+                .'"=>["'
+                .$this->types[$i]
+                .'"],';
+        }
+
+        return base64_encode($result.']');
     }
 }
