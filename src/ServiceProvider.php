@@ -4,6 +4,7 @@ namespace Aqamarine\AlphaCruds;
 
 use Aqamarine\AlphaCruds\Commands\ApiControllerMakeCommand;
 use Aqamarine\AlphaCruds\Commands\ApiRoutesMakeCommand;
+use Aqamarine\AlphaCruds\Commands\ApiTestMakeCommand;
 use Aqamarine\AlphaCruds\Commands\BaseModelMakeCommand;
 use Aqamarine\AlphaCruds\Commands\ControllerMakeCommand;
 use Aqamarine\AlphaCruds\Commands\MigrationMakeCommand;
@@ -99,6 +100,7 @@ class ServiceProvider extends ParentProvider
                 LanguagesFormViewMakeCommand::class,
                 BaseModelMakeCommand::class,
                 MigrationMakeCommand::class,
+                ApiTestMakeCommand::class,
             ]);
         }
 
@@ -120,6 +122,7 @@ class ServiceProvider extends ParentProvider
             LanguagesFormViewMakeCommand::class,
             BaseModelMakeCommand::class,
             MigrationMakeCommand::class,
+            ApiTestMakeCommand::class,
         ]);
     }
 }

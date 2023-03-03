@@ -10,7 +10,7 @@ class $CLASS$ extends \$BASE_CONTROLLER$
     public function index(): JsonResponse
     {
         $$MODEL_PLURAL_NAME$ = $MODEL_NAME$::paginate();
-        return $this->respondSuccess(\$RESOURCE$::collection($$MODEL_PLURAL_NAME$)->resource);
+        return $this->respondSuccess(\$RESOURCE$::collection($$MODEL_PLURAL_NAME$)->response(request())->getData(true)['data']);
     }
 
     public function show($MODEL_NAME$ $$MODEL_CAMEL_NAME$): JsonResponse

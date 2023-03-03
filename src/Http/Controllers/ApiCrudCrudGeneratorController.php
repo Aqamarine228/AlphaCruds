@@ -47,6 +47,7 @@ class ApiCrudCrudGeneratorController extends BaseCrudGeneratorController
         $this->createRequest();
         $this->createRoutes();
         $this->createResource();
+        $this->createTest();
 
         $withMigration = isset($validated['with_migration']);
 
@@ -131,6 +132,17 @@ class ApiCrudCrudGeneratorController extends BaseCrudGeneratorController
                 'model' => $this->model,
                 'fields' => $this->generateMigrationFields(),
             ]
+        ));
+    }
+
+    private function createTest(): void
+    {
+        $this->handleCommandOutput(Artisan::call(
+            'alphacruds:make-api-test',
+            array_merge([
+                'model' => $this->model,
+                'module' => $this->module,
+            ], $this->force ? ['-f' => true] : [])
         ));
     }
 
