@@ -62,5 +62,15 @@ return [
          |
          */
         'route_name_prefix' => 'alphacruds',
+
+        /*
+         |--------------------------------------------------------------------------
+         | AlphaCruds API routes prefix
+         |--------------------------------------------------------------------------
+         |
+         | This is the name prefix with which every route in API CRUD test will start
+         |
+         */
+        'api_routes_prefix' => '/api/v1',
     ],
 ];
