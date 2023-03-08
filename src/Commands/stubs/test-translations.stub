@@ -1,0 +1,89 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use $MODEL_NAMESPACE$\$MODEL$;
+use $MODEL_NAMESPACE$\Language;
+
+class $CLASS$ extends \$BASE_TEST_CASE$
+{
+    public function testItCreatesSuccessfully(): void
+    {
+        $count = $MODEL$::count();
+        $this->postJson(
+            route('$LOWER_NAME$.$MODEL_KEBAB$.store'),
+            $CORRECT_FIELDS$,
+        )->assertStatus(302);
+
+        $this->assertDatabaseCount(
+            '$TABLE_NAME$',
+            $count+1,
+        );
+    }
+
+    public function testItUpdatesSuccessfully(): void
+    {
+        $model = $MODEL$::factory()->create();
+        $this->putJson(
+            route('$LOWER_NAME$.$MODEL_KEBAB$.update', $model->id),
+            $CORRECT_FIELDS$
+        )->assertStatus(302);
+
+        $this->assertDatabaseHas(
+            '$TABLE_NAME$',
+            array_merge(
+                $CORRECT_FIELDS$,
+                ['id' => $model->id]
+            ),
+        );
+    }
+
+    public function testItValidatesUpdateCorrectly(): void
+    {
+        $model = $MODEL$::factory()->create();
+        $this->putJson(
+            route('$LOWER_NAME$.$MODEL_KEBAB$.update', $model->id),
+            $WRONG_FIELDS$,
+        )->assertStatus(422)->assertJsonValidationErrors($FIELDS$);
+    }
+
+    public function testItUpdatesTranslatedFieldsSuccessfully(): void
+    {
+        $model = $MODEL$::factory()->create();
+        $language = Language::factory()->create();
+        $this->putJson(
+            route('$LOWER_NAME$.$MODEL_KEBAB$.update-translated-fields', $model->id),
+            array_merge(
+                $CORRECT_TRANSLATED_FIELDS$,
+                ['language_code' => $language->code],
+            ),
+        )->assertStatus(302);
+
+        $this->assertDatabaseHas(
+            '$PIVOT_TABLE_NAME$',
+            array_merge(
+                $CORRECT_TRANSLATED_FIELDS$,
+                ['$ENTITY_LOWER_NAME$_id' => $model->id, 'language_code' => $language->code]
+            ),
+        );
+    }
+
+    public function testItValidatesUpdateTranslatedCorrectly(): void
+    {
+        $model = $MODEL$::factory()->create();
+        $this->putJson(
+            route('$LOWER_NAME$.$MODEL_KEBAB$.update-translated-fields', $model->id),
+            $WRONG_TRANSLATED_FIELDS$,
+        )->assertStatus(422)->assertJsonValidationErrors($TRANSLATED_FIELDS$);
+    }
+
+    public function testItDestroysCorrectly(): void
+    {
+        $model = $MODEL$::factory()->create();
+        $this->deleteJson(
+            route('$LOWER_NAME$.$MODEL_KEBAB$.destroy', $model->id),
+        )->assertStatus(302);
+
+        $this->assertModelMissing($model);
+    }
+}

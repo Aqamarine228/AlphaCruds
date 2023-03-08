@@ -47,6 +47,8 @@ class CurdCrudGeneratorController extends BaseCrudGeneratorController
         $this->createRequest();
         $this->createViews();
         $this->createRoutes();
+        $this->createFactory();
+        $this->createTest();
 
         $withMigration = isset($validated['with_migration']);
 
@@ -134,6 +136,32 @@ class CurdCrudGeneratorController extends BaseCrudGeneratorController
         ));
     }
 
+    private function createFactory(): void
+    {
+        $this->handleCommandOutput(Artisan::call(
+            'alphacruds:make-factory',
+            array_merge([
+                'model' => $this->model,
+                'fields' => $this->generateFactoryFields(),
+                'module' => $this->module,
+            ], $this->force ? ['-f' => true] : [])
+        ));
+    }
+
+    private function createTest(): void
+    {
+        $this->handleCommandOutput(Artisan::call(
+            'alphacruds:make-test',
+            array_merge([
+                'model' => $this->model,
+                'fields' => $this->generateTestFields(),
+                'correct-fields' => $this->generateCorrectTestFields(),
+                'wrong-fields' => $this->generateWrongTestFields(),
+                'module' => $this->module,
+            ], $this->force ? ['-f' => true] : [])
+        ));
+    }
+
     private function handleCommandOutput(int $result): void
     {
         if ($result == 1) {
@@ -214,6 +242,71 @@ class CurdCrudGeneratorController extends BaseCrudGeneratorController
         return match ($type) {
             'text' => 'string',
             'number' => 'bigInteger',
+        };
+    }
+
+    private function generateFactoryFields(): string
+    {
+        $result = '[';
+        for ($i = 0; $i < sizeof($this->fields); $i++) {
+            $result.= '"'.Str::snake($this->fields[$i])
+                .'"=>["'
+                .$this->types[$i]
+                .'"],';
+        }
+
+        return base64_encode($result.']');
+    }
+
+    private function generateTestFields(): string
+    {
+        $result = [];
+        foreach ($this->fields as $field) {
+            $result[] = Str::snake($field);
+        }
+
+        return base64_encode('["'.implode('","', $result).'"]');
+    }
+
+    private function generateCorrectTestFields(): string
+    {
+        $result = '[';
+        for ($i = 0; $i < sizeof($this->fields); $i++) {
+            $result.= '"'.Str::snake($this->fields[$i])
+                .'"=>'
+                .$this->toCorrectValues($this->types[$i])
+                .',';
+        }
+
+        return base64_encode($result.']');
+    }
+
+    private function toCorrectValues(string $type): string
+    {
+        return match ($type) {
+            'text' => '"string"',
+            'number' => 1337,
+        };
+    }
+
+    private function generateWrongTestFields(): string
+    {
+        $result = '[';
+        for ($i = 0; $i < sizeof($this->fields); $i++) {
+            $result.= '"'.Str::snake($this->fields[$i])
+                .'"=>'
+                .$this->toWrongValues($this->types[$i])
+                .',';
+        }
+
+        return base64_encode($result.']');
+    }
+
+    private function toWrongValues(string $type): string
+    {
+        return match ($type) {
+            'text' => 1337,
+            'number' => '"string"',
         };
     }
 }
