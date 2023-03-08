@@ -4,7 +4,6 @@ namespace $NAMESPACE$;
 
 use $MODEL_NAMESPACE$\$MODEL$;
 use $MODEL_NAMESPACE$\Language;
-use Illuminate\Testing\Fluent\AssertableJson;
 
 class $CLASS$ extends \$BASE_TEST_CASE$
 {

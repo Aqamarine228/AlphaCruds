@@ -54,6 +54,8 @@ class TranslatedCrudCrudGeneratorController extends BaseCrudGeneratorController
         $this->createRequest();
         $this->createViews();
         $this->createRoutes();
+        $this->createFactory();
+        $this->createTest();
 
         $withMigration = isset($validated['with_migration']);
         $withIntermediateMigration = isset($validated['with_intermediate_migration']);
@@ -157,6 +159,35 @@ class TranslatedCrudCrudGeneratorController extends BaseCrudGeneratorController
                 'fields' => $this->generateIntermediateMigrationFields(),
                 '-l' => true,
             ]
+        ));
+    }
+
+    private function createFactory(): void
+    {
+        $this->handleCommandOutput(Artisan::call(
+            'alphacruds:make-factory',
+            array_merge([
+                'model' => $this->model,
+                'fields' => $this->generateFactoryFields(),
+                'module' => $this->module,
+            ], $this->force ? ['-f' => true] : [])
+        ));
+    }
+
+    private function createTest(): void
+    {
+        $this->handleCommandOutput(Artisan::call(
+            'alphacruds:make-test',
+            array_merge([
+                'model' => $this->model,
+                'fields' => $this->generateTestFields(),
+                'correct-fields' => $this->generateCorrectTestFields(),
+                'wrong-fields' => $this->generateWrongTestFields(),
+                'module' => $this->module,
+                '--translations' => $this->generateTestTranslatedFields(),
+                '--correct-translations' => $this->generateCorrectTestTranslatedFields(),
+                '--wrong-translations' => $this->generateWrongTestTranslatedFields(),
+            ], $this->force ? ['-f' => true] : [])
         ));
     }
 
@@ -270,6 +301,107 @@ class TranslatedCrudCrudGeneratorController extends BaseCrudGeneratorController
         return match ($type) {
             'text' => 'string',
             'number' => 'bigInteger',
+        };
+    }
+
+    private function generateFactoryFields(): string
+    {
+        $result = '[';
+        for ($i = 0; $i < sizeof($this->fields); $i++) {
+            $result.= '"'.Str::snake($this->fields[$i])
+                .'"=>["'
+                .$this->types[$i]
+                .'"],';
+        }
+
+        return base64_encode($result.']');
+    }
+
+    private function generateTestFields(): string
+    {
+        $result = [];
+        foreach ($this->fields as $field) {
+            $result[] = Str::snake($field);
+        }
+
+        return base64_encode('["'.implode('","', $result).'"]');
+    }
+
+    private function generateCorrectTestFields(): string
+    {
+        $result = '[';
+        for ($i = 0; $i < sizeof($this->fields); $i++) {
+            $result.= '"'.Str::snake($this->fields[$i])
+                .'"=>'
+                .$this->toCorrectValues($this->types[$i])
+                .',';
+        }
+
+        return base64_encode($result.']');
+    }
+
+    private function generateWrongTestFields(): string
+    {
+        $result = '[';
+        for ($i = 0; $i < sizeof($this->fields); $i++) {
+            $result.= '"'.Str::snake($this->fields[$i])
+                .'"=>'
+                .$this->toWrongValues($this->types[$i])
+                .',';
+        }
+
+        return base64_encode($result.']');
+    }
+
+    private function generateTestTranslatedFields(): string
+    {
+        $result = [];
+        foreach ($this->translatedFields as $field) {
+            $result[] = Str::snake($field);
+        }
+
+        return base64_encode('["'.implode('","', $result).'"]');
+    }
+
+    private function generateCorrectTestTranslatedFields(): string
+    {
+        $result = '[';
+        for ($i = 0; $i < sizeof($this->translatedFields); $i++) {
+            $result.= '"'.Str::snake($this->translatedFields[$i])
+                .'"=>'
+                .$this->toCorrectValues($this->translatedTypes[$i])
+                .',';
+        }
+
+        return base64_encode($result.']');
+    }
+
+    private function generateWrongTestTranslatedFields(): string
+    {
+        $result = '[';
+        for ($i = 0; $i < sizeof($this->translatedFields); $i++) {
+            $result.= '"'.Str::snake($this->translatedFields[$i])
+                .'"=>'
+                .$this->toWrongValues($this->translatedTypes[$i])
+                .',';
+        }
+
+        return base64_encode($result.']');
+    }
+
+    private function toCorrectValues(string $type): string
+    {
+        return match ($type) {
+            'text' => '"string"',
+            'number' => 1337,
+        };
+    }
+
+    private function toWrongValues(string $type): string
+    {
+        return match ($type) {
+            'text' => 1337,
+            'number' => '"string"',
         };
     }
 }
