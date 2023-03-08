@@ -1,0 +1,73 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use $MODEL_NAMESPACE$\$MODEL$;
+use Illuminate\Testing\Fluent\AssertableJson;
+
+class $CLASS$ extends \$BASE_TEST_CASE$
+{
+    public function testItCreatesSuccessfully(): void
+    {
+        $this->postJson(
+            route('$LOWER_NAME$.$MODEL_KEBAB$.create'),
+            $CORRECT_FIELDS$,
+        )->assertStatus(200);
+
+        $this->assertDatabaseHas(
+            '$TABLE_NAME$',
+            $CORRECT_FIELDS$,
+        );
+    }
+
+    public function testItValidatesCorrectly(): void
+    {
+        $this->postJson(
+            route('$LOWER_NAME$.$MODEL_KEBAB$.create'),
+            $WRONG_FIELDS$,
+        )->assertStatus(422)->assertJsonValidationErrors($FIELDS$);
+    }
+
+    public function testItValidatesRequiredCorrectly(): void
+    {
+        $this->postJson(
+            route('$LOWER_NAME$.$MODEL_KEBAB$.create'),
+        )->assertStatus(422)->assertJsonValidationErrors($FIELDS$);
+    }
+
+    public function testItUpdatesSuccessfully(): void
+    {
+        $model = $MODEL$::factory()->create();
+        $this->postJson(
+            route('$LOWER_NAME$.$MODEL_KEBAB$.update', $model->id),
+            $CORRECT_FIELDS$
+        )->assertStatus(200);
+
+        $this->assertDatabaseHas(
+            '$TABLE_NAME$',
+            array_merge(
+                $CORRECT_FIELDS$,
+                ['id' => $model->id]
+            ),
+        );
+    }
+
+    public function testItValidatesUpdateCorrectly(): void
+    {
+        $model = $MODEL$::factory()->create();
+        $this->postJson(
+            route('$LOWER_NAME$.$MODEL_KEBAB$.update', $model->id),
+            $WRONG_FIELDS$,
+        )->assertStatus(422)->assertJsonValidationErrors($FIELDS$);
+    }
+
+    public function testItDestroysCorrectly(): void
+    {
+        $model = $MODEL$::factory()->create();
+        $this->postJson(
+            route('$LOWER_NAME$.$MODEL_KEBAB$.destroy', $model->id),
+        )->assertStatus(422);
+
+        $this->assertModelMissing($model);
+    }
+}

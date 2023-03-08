@@ -10,29 +10,31 @@ use Nwidart\Modules\Traits\ModuleCommandTrait;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-class ApiTestMakeCommand extends GeneratorCommand
+class TestMakeCommand extends GeneratorCommand
 {
     use ModuleCommandTrait;
 
     protected $argumentName = 'model';
-    protected $name = 'alphacruds:make-api-test';
-    protected $description = 'Create a new test class for the specified API CRUD.';
+    protected $name = 'alphacruds:make-test';
+    protected $description = 'Create a new test class for the specified CRUD.';
 
-
-    protected function getTemplateContents(): string
+    protected function getTemplateContents(): bool|array|string
     {
         $module = $this->laravel['modules']->findOrFail($this->getModuleName());
 
-        return (new Stub('/api-test.stub', [
+        return (new Stub($this->getStub(), [
             'NAMESPACE' => $this->getClassNamespace($module),
+            'LOWER_NAME' => $module->getLowerName(),
             'BASE_TEST_CASE' => $this->getBaseTestCasePath(),
             'MODEL_NAMESPACE' => $this->getModelNamespace(),
-            'BASE_ROUTES' => $this->getBaseRoutes(),
             'MODEL' => $this->getModelName(),
-            'MODEL_CAMEL' => $this->getModelCamel(),
             'MODEL_KEBAB' => $this->getModelKebab(),
             'RESOURCE' => $this->getResourcePath(),
             'CLASS' => $this->getClassName(),
+            'FIELDS' => $this->getFields(),
+            'CORRECT_FIELDS' => $this->getCorrectFields(),
+            'WRONG_FIELDS' => $this->getWrongFields(),
+            'TABLE_NAME' => $this->getTableName(),
         ]))->render();
     }
 
@@ -42,6 +44,11 @@ class ApiTestMakeCommand extends GeneratorCommand
         $testPath = GenerateConfigReader::read('test-feature');
 
         return $path . $testPath->getPath() . '/' . $this->getModelName() . 'Test.php';
+    }
+
+    private function getStub(): string
+    {
+        return $this->option('translations') ? '/test-translations.stub' : '/test.stub';
     }
 
     public function getDefaultNamespace(): string
@@ -56,10 +63,6 @@ class ApiTestMakeCommand extends GeneratorCommand
         return $this->getClass() . 'Test';
     }
 
-    private function getBaseRoutes(): string
-    {
-        return config('alphacruds.routes.api_routes_prefix');
-    }
 
     private function getBaseTestCasePath(): string
     {
@@ -110,6 +113,18 @@ class ApiTestMakeCommand extends GeneratorCommand
             . 'Resource';
     }
 
+    private function getFields(): string
+    {
+        return base64_decode($this->argument('fields'));
+    }
+    private function getCorrectFields(): string
+    {
+        return base64_decode($this->argument('correct-fields'));
+    }private function getWrongFields(): string
+    {
+        return base64_decode($this->argument('wrong-fields'));
+    }
+
     private function getModelName(): string
     {
         return Str::studly($this->argument('model'));
@@ -120,15 +135,21 @@ class ApiTestMakeCommand extends GeneratorCommand
         return Str::kebab($this->argument('model'));
     }
 
-    private function getModelCamel(): string
+    private function getTableName(): string
     {
-        return Str::camel($this->argument('model'));
+        if ($this->option('table')) {
+            return $this->option('table');
+        }
+        return Str::snake(Str::plural($this->argument('model')));
     }
 
     protected function getArguments(): array
     {
         return [
             ['model', InputArgument::REQUIRED, 'The name of the model for given test.'],
+            ['fields', InputArgument::REQUIRED, 'Fields that will be used in test.'],
+            ['correct-fields', InputArgument::REQUIRED, 'Correct fields that will be used in test.'],
+            ['wrong-fields', InputArgument::REQUIRED, 'Wrong fields that will be used in test.'],
             ['module', InputArgument::OPTIONAL, 'The name of module will be used.'],
         ];
     }
@@ -136,6 +157,8 @@ class ApiTestMakeCommand extends GeneratorCommand
     protected function getOptions(): array
     {
         return [
+            ['translations', 't', InputOption::VALUE_OPTIONAL, 'Whether to create translations test.'],
+            ['table', 'ta', InputOption::VALUE_OPTIONAL, 'Table name.'],
             ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the test already exists'],
             ['base', 'b', InputOption::VALUE_OPTIONAL, 'Set custom base test path.'],
             ['model-namespace', 'mn', InputOption::VALUE_OPTIONAL, 'Namespace of model which will test class use.'],

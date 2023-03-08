@@ -13,6 +13,7 @@ use Aqamarine\AlphaCruds\Commands\ModelMakeCommand;
 use Aqamarine\AlphaCruds\Commands\RequestMakeCommand;
 use Aqamarine\AlphaCruds\Commands\ResourceMakeCommand;
 use Aqamarine\AlphaCruds\Commands\RoutesMakeCommand;
+use Aqamarine\AlphaCruds\Commands\TestMakeCommand;
 use Aqamarine\AlphaCruds\Commands\ViewMakeCommands\CreateViewMakeCommand;
 use Aqamarine\AlphaCruds\Commands\ViewMakeCommands\EditViewMakeCommand;
 use Aqamarine\AlphaCruds\Commands\ViewMakeCommands\FormViewMakeCommand;
@@ -103,6 +104,7 @@ class ServiceProvider extends ParentProvider
                 MigrationMakeCommand::class,
                 ApiTestMakeCommand::class,
                 FactoryMakeCommand::class,
+                TestMakeCommand::class,
             ]);
         }
 
@@ -126,6 +128,7 @@ class ServiceProvider extends ParentProvider
             MigrationMakeCommand::class,
             ApiTestMakeCommand::class,
             FactoryMakeCommand::class,
+            TestMakeCommand::class,
         ]);
     }
 }
