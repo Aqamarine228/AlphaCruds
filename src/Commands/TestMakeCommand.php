@@ -25,6 +25,7 @@ class TestMakeCommand extends GeneratorCommand
         return (new Stub($this->getStub(), [
             'NAMESPACE' => $this->getClassNamespace($module),
             'LOWER_NAME' => $module->getLowerName(),
+            'ENTITY_LOWER_NAME' => $this->getEntityLowerName(),
             'BASE_TEST_CASE' => $this->getBaseTestCasePath(),
             'MODEL_NAMESPACE' => $this->getModelNamespace(),
             'MODEL' => $this->getModelName(),
@@ -35,6 +36,10 @@ class TestMakeCommand extends GeneratorCommand
             'CORRECT_FIELDS' => $this->getCorrectFields(),
             'WRONG_FIELDS' => $this->getWrongFields(),
             'TABLE_NAME' => $this->getTableName(),
+            'PIVOT_TABLE_NAME' => $this->getPivotTableName(),
+            'TRANSLATED_FIELDS' => $this->getTranslations(),
+            'CORRECT_TRANSLATED_FIELDS' => $this->getCorrectTranslations(),
+            'WRONG_TRANSLATED_FIELDS' => $this->getWrongTranslations(),
         ]))->render();
     }
 
@@ -48,7 +53,11 @@ class TestMakeCommand extends GeneratorCommand
 
     private function getStub(): string
     {
-        return $this->option('translations') ? '/test-translations.stub' : '/test.stub';
+        return (
+            $this->option('translations')
+            && $this->option('correct-translations')
+            && $this->option('wrong-translations')
+        ) ? '/test-translations.stub' : '/test.stub';
     }
 
     public function getDefaultNamespace(): string
@@ -120,9 +129,25 @@ class TestMakeCommand extends GeneratorCommand
     private function getCorrectFields(): string
     {
         return base64_decode($this->argument('correct-fields'));
-    }private function getWrongFields(): string
+    }
+
+    private function getWrongFields(): string
     {
         return base64_decode($this->argument('wrong-fields'));
+    }
+
+    private function getTranslations(): string
+    {
+        return base64_decode($this->option('translations'));
+    }
+    private function getCorrectTranslations(): string
+    {
+        return base64_decode($this->option('correct-translations'));
+    }
+
+    private function getWrongTranslations(): string
+    {
+        return base64_decode($this->option('wrong-translations'));
     }
 
     private function getModelName(): string
@@ -135,12 +160,22 @@ class TestMakeCommand extends GeneratorCommand
         return Str::kebab($this->argument('model'));
     }
 
+    private function getEntityLowerName(): string
+    {
+        return Str::snake(Str::singular($this->argument('model')));
+    }
+
     private function getTableName(): string
     {
         if ($this->option('table')) {
             return $this->option('table');
         }
         return Str::snake(Str::plural($this->argument('model')));
+    }
+
+    private function getPivotTableName(): string
+    {
+        return Str::snake(Str::singular($this->argument('model'))) . '_language';
     }
 
     protected function getArguments(): array
@@ -157,8 +192,11 @@ class TestMakeCommand extends GeneratorCommand
     protected function getOptions(): array
     {
         return [
-            ['translations', 't', InputOption::VALUE_OPTIONAL, 'Whether to create translations test.'],
+            ['translations', 't', InputOption::VALUE_OPTIONAL, 'Translated fields.'],
+            ['correct-translations', 'ct', InputOption::VALUE_OPTIONAL, 'Correct translated fields.'],
+            ['wrong-translations', 'wt', InputOption::VALUE_OPTIONAL, 'Wrong translated fields.'],
             ['table', 'ta', InputOption::VALUE_OPTIONAL, 'Table name.'],
+            ['pivot_table', 'pt', InputOption::VALUE_OPTIONAL, 'Pivot table name.'],
             ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the test already exists'],
             ['base', 'b', InputOption::VALUE_OPTIONAL, 'Set custom base test path.'],
             ['model-namespace', 'mn', InputOption::VALUE_OPTIONAL, 'Namespace of model which will test class use.'],
