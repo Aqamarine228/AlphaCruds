@@ -1,36 +1,21 @@
-# AlphaCruds (Laravel Package)
+MIT License
 
-[![Tests](https://github.com/Aqamarine228/AlphaCruds/workflows/Test/badge.svg)](https://github.com/Aqamarine228/AlphaCruds/actions)
-![GitHub](https://img.shields.io/github/license/aqamarine228/alphacruds)
-[![Latest Stable Version](http://poser.pugx.org/aqamarine/alphacruds/v)](https://packagist.org/packages/aqamarine/alphacruds)
-[![Latest Unstable Version](http://poser.pugx.org/aqamarine/alphacruds/v/unstable)](https://github.com/aqamarine/AlphaCruds)
+Copyright (c) 2023 alpha-dev-team
 
-[//]: # ([![PHP Version Require]&#40;http://poser.pugx.org/alpha-dev-team/alphacruds/require/php&#41;]&#40;https://packagist.org/packages/alpha-dev-team/alphacruds&#41;)
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-[//]: # ([![Dependents]&#40;http://poser.pugx.org/alpha-dev-team/alphacruds/dependents&#41;]&#40;https://packagist.org/packages/alpha-dev-team/alphacruds&#41;)
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-Package used to automate Admin panel CRUDS creation process in AlphaDev style
-
-## Installation
-
-Using the package manager [composer](https://getcomposer.org).
-
-```bash
-composer require aqamarine/alphacruds
-```
-## Package Configuration
-
-For package to work publishing assets and migrations is needed
-
-### Publish Assets
-
-```bash
-php artisan vendor:publish --tag="alphacruds-assets"
-```
-
-### Publish Config (Optional)
-
-```bash
-php artisan vendor:publish --tag="alphacruds-config"
-```
-
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
