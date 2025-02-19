@@ -42,7 +42,10 @@
     "config": {
         "sort-packages": true,
         "preferred-install": "dist",
-        "optimize-autoloader": true
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "wikimedia/composer-merge-plugin": true
+        }
     },
     "extra": {
         "laravel": {
