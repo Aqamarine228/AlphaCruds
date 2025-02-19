@@ -1,6 +1,6 @@
 # Table of contents
 
-* [LICENSE](README.md)
+* [LICENSE](LICENSE)
 * [AlphaCruds (Laravel Package)](<README (1).md>)
 * [Page that describes installation](page-that-describes-installation.md)
 * [public](public/README.md)

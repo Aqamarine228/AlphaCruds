@@ -4,7 +4,7 @@ namespace Aqamarine\AlphaCruds\Commands;
 
 use Aqamarine\AlphaCruds\Support\Stub;
 use Illuminate\Support\Str;
-use Nwidart\Modules\Commands\GeneratorCommand;
+use Nwidart\Modules\Commands\Make\GeneratorCommand;
 use Nwidart\Modules\Support\Migrations\SchemaParser;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
