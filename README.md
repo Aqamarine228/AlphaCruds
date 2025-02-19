@@ -3,7 +3,7 @@
 [![Tests](https://github.com/Aqamarine228/AlphaCruds/workflows/Test/badge.svg)](https://github.com/Aqamarine228/AlphaCruds/actions)
 ![GitHub](https://img.shields.io/github/license/aqamarine228/alphacruds)
 [![Latest Stable Version](http://poser.pugx.org/aqamarine/alphacruds/v)](https://packagist.org/packages/aqamarine/alphacruds)
-[![Latest Unstable Version](http://poser.pugx.org/aqamarine/alphacruds/v/unstable)](https://github.com/aqamarine/AlphaCruds)
+[![Latest Unstable Version](http://poser.pugx.org/aqamarine/alphacruds/v/unstable)](https://github.com/Aqamarine228/AlphaCruds)
 
 [//]: # ([![PHP Version Require]&#40;http://poser.pugx.org/alpha-dev-team/alphacruds/require/php&#41;]&#40;https://packagist.org/packages/alpha-dev-team/alphacruds&#41;)
 
